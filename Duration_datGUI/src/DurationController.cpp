@@ -1072,6 +1072,9 @@ ofxTLTrack* DurationController::addTrack(string trackType, string trackName, str
 	else if(trackType == translation.translateKey("lfo") || trackType == "lfo"){
 		newTrack = timeline.addLFO(trackName, xmlFileName);
 	}
+    else if(trackType == translation.translateKey("dropdownflags") || trackType == "DropDownFlags"){
+        newTrack = timeline.addDropDownFlags(trackName, xmlFileName);
+    }
 	else if(trackType == translation.translateKey("audio") || trackType == "audio"){
 		if(audioTrack != NULL){
 			ofLogError("DurationController::addTrack") << "Trying to add an additional audio track";
