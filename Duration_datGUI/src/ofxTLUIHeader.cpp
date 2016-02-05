@@ -32,8 +32,10 @@
 
 #include "ofxTLUIHeader.h"
 #include "ofxTLAudioTrack.h"
-
 #include <locale>
+
+
+//--------------------------------------------------------------------------------
 bool isNumber(const string& s){
 	locale loc;
 	std::string::const_iterator it = s.begin();
@@ -41,6 +43,7 @@ bool isNumber(const string& s){
 	return !s.empty() && it == s.end();
 }
 
+//--------------------------------------------------------------------------------
 ofxTLUIHeader::ofxTLUIHeader(){
 	gui = NULL;
     trackHeader = NULL;
@@ -58,11 +61,36 @@ ofxTLUIHeader::ofxTLUIHeader(){
 	bins = NULL;
 	minDialer = NULL;
 	maxDialer = NULL;
-    sendOSCEnable = NULL;
+//    sendOSCEnable = NULL;
 	receiveOSCEnable = NULL;
 	modified = false;
+    
+    // DAT GUI
+    headerGuiComponentWidth = 150;
+    guiLabel = new ofxDatGuiLabel("DEFAULT_NAME");
+    guiLabel->setBackgroundColor(ofColor(0,0,0,255));
+    guiDelay = new ofxDatGuiTextInput("Delay Ms.","0.000");
+    guiOscOut = new ofxDatGuiToggle("OSC OUT",true);
+    
+    // DAAT GUI events
+    guiOscOut->onButtonEvent(this, &ofxTLUIHeader::onButtonEvent);
+    
+    // array of gui components
+    headerGuiComponents.push_back(guiLabel);
+    headerGuiComponents.push_back(guiDelay);
+    headerGuiComponents.push_back(guiOscOut);
+    
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        if(i!=0) headerGuiComponents[i]->setBackgroundColor(ofColor(35,35,35,255));
+
+        headerGuiComponents[i]->setWidth(headerGuiComponentWidth,headerGuiComponentWidth/2);
+    }
+
+    
 }
 
+//--------------------------------------------------------------------------------
 ofxTLUIHeader::~ofxTLUIHeader(){
 
     if(trackHeader != NULL){
@@ -76,6 +104,26 @@ ofxTLUIHeader::~ofxTLUIHeader(){
 
 }
 
+//--------------------------------------------------------------------------------
+void ofxTLUIHeader::draw()
+{
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        headerGuiComponents[i]->draw();
+    }
+}
+
+
+//--------------------------------------------------------------------------------
+void ofxTLUIHeader::update()
+{
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        headerGuiComponents[i]->update();
+    }
+}
+
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setTrackHeader(ofxTLTrackHeader* header){
     trackHeader = header;
 
@@ -141,10 +189,10 @@ void ofxTLUIHeader::setTrackHeader(ofxTLTrackHeader* header){
 		gui->addWidgetRight(receiveOSCEnable);
 	}
 
-//	if(trackType != "Audio"){ //TODO: audio should send some nice FFT OSC
-		sendOSCEnable = new ofxUIToggle(translation->translateKey("send osc"), true, 17, 17, 0, 0, OFX_UI_FONT_SMALL);
-		sendOSCEnable->setPadding(1);
-		gui->addWidgetRight(sendOSCEnable);
+//////	if(trackType != "Audio"){ //TODO: audio should send some nice FFT OSC
+//		sendOSCEnable = new ofxUIToggle(translation->translateKey("send osc"), true, 17, 17, 0, 0, OFX_UI_FONT_SMALL);
+//		sendOSCEnable->setPadding(1);
+//		gui->addWidgetRight(sendOSCEnable);
 //	}
 
     //DELETE ME???
@@ -163,11 +211,29 @@ void ofxTLUIHeader::setTrackHeader(ofxTLTrackHeader* header){
 
     ofAddListener(trackHeader->events().viewWasResized, this, &ofxTLUIHeader::viewWasResized);
     ofAddListener(gui->newGUIEvent, this, &ofxTLUIHeader::guiEvent);
+    
+    // DAT GUI
+    guiLabel->setLabel(getTrack()->getDisplayName());
+    
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        headerGuiComponents[i]->setPosition(i*headerGuiComponentWidth,trackHeader->getDrawRect().y);
+    }
+
 }
 
-void ofxTLUIHeader::viewWasResized(ofEventArgs& args){
+//--------------------------------------------------------------------------------
+void ofxTLUIHeader::viewWasResized(ofEventArgs& args)
+{
     gui->getRect()->y = trackHeader->getDrawRect().y; //TWEAK to get on the header
 	gui->getRect()->x = trackHeader->getTimeline()->getTopRight().x - (gui->getRect()->width + 50);
+
+     // DAT GUI
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        headerGuiComponents[i]->setPosition(i*headerGuiComponentWidth,trackHeader->getDrawRect().y);
+    }
+
 }
 
 //void ofxTLUIHeader::setMinFrequency(int frequency){
@@ -205,6 +271,7 @@ void ofxTLUIHeader::viewWasResized(ofEventArgs& args){
 //	}
 //}
 
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setValueRange(ofRange range){
 	if(getTrackType() == "Curves" || getTrackType() == "LFO"){
 		minDialer->setValue(range.min);
@@ -216,6 +283,7 @@ void ofxTLUIHeader::setValueRange(ofRange range){
 	}
 }
 
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setValueMin(float min){
 	if(getTrackType() == "Curves" || getTrackType() == "LFO"){
 		minDialer->setValue(min);
@@ -226,6 +294,7 @@ void ofxTLUIHeader::setValueMin(float min){
 	}
 }
 
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setValueMax(float max){
 	if(getTrackType() == "Curves" || getTrackType() == "LFO"){
 		maxDialer->setValue(max);
@@ -236,30 +305,36 @@ void ofxTLUIHeader::setValueMax(float max){
 	}
 }
 
+//--------------------------------------------------------------------------------
 ofxUICanvas* ofxTLUIHeader::getGui(){
 	return gui;
 }
 
-bool ofxTLUIHeader::sendOSC(){
-	return sendOSCEnable != NULL && sendOSCEnable->getValue();
-}
+////--------------------------------------------------------------------------------
+//bool ofxTLUIHeader::sendOSC(){
+//	return sendOSCEnable != NULL && sendOSCEnable->getValue();
+//}
+//
+////--------------------------------------------------------------------------------
+//void ofxTLUIHeader::setSendOSC(bool enable){
+//	if(sendOSCEnable != NULL){
+//		sendOSCEnable->setValue(enable);
+//	}
+//}
 
-void ofxTLUIHeader::setSendOSC(bool enable){
-	if(sendOSCEnable != NULL){
-		sendOSCEnable->setValue(enable);
-	}
-}
-
+//--------------------------------------------------------------------------------
 bool ofxTLUIHeader::receiveOSC(){
 	return receiveOSCEnable != NULL && receiveOSCEnable->getValue();
 }
 
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setReceiveOSC(bool enable){
 	if(receiveOSCEnable != NULL){
 		receiveOSCEnable->setValue(enable);
 	}
 }
 
+//--------------------------------------------------------------------------------
 void ofxTLUIHeader::setShouldDelete(bool del){
 	shouldDelete = del;
 	if(shouldDelete){
@@ -268,30 +343,37 @@ void ofxTLUIHeader::setShouldDelete(bool del){
 	}
 }
 
+//--------------------------------------------------------------------------------
 bool ofxTLUIHeader::getShouldDelete(){
     return shouldDelete;
 }
 
+//--------------------------------------------------------------------------------
 bool ofxTLUIHeader::getModified(){
 	bool b = modified;
 	modified = false;
 	return b;
 }
 
+//--------------------------------------------------------------------------------
 ofxTLTrack* ofxTLUIHeader::getTrack(){
 	return trackHeader->getTrack();
 }
 
+//--------------------------------------------------------------------------------
 ofxTLTrackHeader* ofxTLUIHeader::getTrackHeader(){
 	return trackHeader;
 }
 
+//--------------------------------------------------------------------------------
 string ofxTLUIHeader::getTrackType(){
 	return trackType;
 }
 
-void ofxTLUIHeader::guiEvent(ofxUIEventArgs &e){
-//    cout << e.widget->getName() << " hit!" << endl;
+//--------------------------------------------------------------------------------
+void ofxTLUIHeader::guiEvent(ofxUIEventArgs &e)
+{
+    //    cout << e.widget->getName() << " hit!" << endl;
 
 	if(e.widget->getName() == ">" && ((ofxUILabelButton*)e.widget)->getValue()){
 		getTrack()->togglePlay();
@@ -353,6 +435,9 @@ void ofxTLUIHeader::guiEvent(ofxUIEventArgs &e){
 			modified = true;
 		}
 	}
+    
+    
+    
     /*
 	else if(e.widget == bins){
 		if(!isNumber(bins->getTextString())){
@@ -368,12 +453,36 @@ void ofxTLUIHeader::guiEvent(ofxUIEventArgs &e){
 		}
 	}
      */
+    
+    
+    
+    
     //this is polled from outside
-	else if(e.widget == sendOSCEnable){
-		modified = true;
-    }
+//	else if(e.widget == sendOSCEnable){
+//		modified = true;
+//    }
 	else if(e.widget == receiveOSCEnable){
 		modified = true;
     }
+}
+
+void ofxTLUIHeader::onButtonEvent(ofxDatGuiButtonEvent e)
+{
+    // we have a couple ways to figure out which button was clicked //
+    
+    // we can compare our button pointer to the target of the event //
+//    if (e.target == button)
+//    {
+//        
+//        
+//    }
+    // else // or we can check against the label of the event target //
+    if(e.target->getLabel() == "OSC OUT")
+    {
+        cout << "OSC OUT PRESSED" << endl;
+        modified = true;
+
+    }
+
 }
 

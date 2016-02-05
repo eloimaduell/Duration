@@ -493,7 +493,8 @@ void DurationController::handleOscIn(){
 				string trackName = m.getArgAsString(0);
 				ofPtr<ofxTLUIHeader> header = getHeaderWithDisplayName(trackName);
 				if(header != NULL){
-					header->setSendOSC(m.getArgAsInt32(1) != 0);
+//                    header->setSendOSC(m.getArgAsInt32(1) != 0);
+                    header->setOscOut(m.getArgAsInt32(1) != 0);
 				}
 				else {
 					ofLogError("Duration:OSC") << " Enable OSC out failed. track not found " << trackName;
@@ -735,12 +736,13 @@ void DurationController::handleOscOut(){
 		vector<ofxTLTrack*>& tracks = pages[i]->getTracks();
 		for(int t = 0; t < tracks.size(); t++){
 			ofPtr<ofxTLUIHeader> header = headers[tracks[t]->getName()];
-			if(!header->sendOSC()){
+			if(!header->getOscOut()){
 				continue;
 			}
 			unsigned long trackSampleTime = tracks[t]->getIsPlaying() ? tracks[t]->currentTrackTime() : timelineSampleTime;
 			string trackType = tracks[t]->getTrackType();
-			if(trackType == "Curves" || trackType == "Switches" || trackType == "Colors" || trackType == "Audio" || trackType == "LFO"){
+			if(trackType == "Curves" || trackType == "Switches" || trackType == "Colors" || trackType == "Audio" || trackType == "LFO" || trackType =="DropDownFlags")
+            {
 				bool messageValid = false;
 				ofxOscMessage m;
 				if(trackType == "Curves" || trackType == "LFO"){
@@ -775,16 +777,24 @@ void DurationController::handleOscOut(){
 						messageValid = true;
 					}
 				}
-				else if(trackType == "Audio"){
-					ofxTLAudioTrack* audio = (ofxTLAudioTrack*)tracks[t];
-					if(audio->getIsPlaying() || timeline.getIsPlaying()){
-						vector<float>& bins = audio->getFFT();
-						for(int b = 0; b < bins.size(); b++){
-							m.addFloatArg(bins[b]);
-						}
-						messageValid = true;
-					}
-				}
+                else if(trackType == "Audio"){
+                    ofxTLAudioTrack* audio = (ofxTLAudioTrack*)tracks[t];
+                    if(audio->getIsPlaying() || timeline.getIsPlaying()){
+                        vector<float>& bins = audio->getFFT();
+                        
+                        float sum=0;
+                        for(int b = 0; b < bins.size(); b++)
+                        {
+                            sum = sum + bins[b];
+                        }
+                        m.addFloatArg(sum);
+//                        for(int b = 0; b < bins.size(); b++){
+//                            m.addFloatArg(bins[b]);
+//                        }
+                        
+                        messageValid = true;
+                    }
+                }
 				if(messageValid){
 					m.setAddress(ofFilePath::addLeadingSlash(tracks[t]->getDisplayName()));
 					bundle.addMessage(m);
@@ -825,19 +835,26 @@ void DurationController::stopRecording(){
 
 //--------------------------------------------------------------
 void DurationController::bangFired(ofxTLBangEventArgs& bang){
-// 	ofLogNotice() << "Bang from " << bang.track->getDisplayName() << " at time " << bang.currentTime << " with flag " << bang.flag;
-	if(!settings.oscOutEnabled){
+ 	//ofLogNotice() << "Bang from " << bang.track->getDisplayName() << " at time " << bang.currentTime << " with flag " << bang.flag;
+    if(!settings.oscOutEnabled)
+    {
 		return;
 	}
 
+    
     string trackType = bang.track->getTrackType();
-    if(!headers[bang.track->getName()]->sendOSC()){
+    if(!headers[bang.track->getName()]->getOscOut()){
         return;
     }
     ofxOscMessage m;
     m.setAddress( ofFilePath::addLeadingSlash(bang.track->getDisplayName()) );
 
-    if(trackType == "Flags"){
+    if(trackType == "Flags")
+    {
+        m.addStringArg(bang.flag);
+    }
+    else if(trackType == "DropDownFlags")
+    {
         m.addStringArg(bang.flag);
     }
 
@@ -1201,6 +1218,13 @@ void DurationController::update(ofEventArgs& args){
         }
         it++;
     }
+    
+    // update ofxTLUIHeaders
+    map<string, ofPtr<ofxTLUIHeader> >::iterator trackit;
+    for(trackit = headers.begin(); trackit != headers.end(); trackit++){
+        trackit->second->update();
+    }
+
 }
 
 //--------------------------------------------------------------
@@ -1230,6 +1254,7 @@ void DurationController::draw(ofEventArgs& args){
 			ofSetColor(200,20,0,(1-timeSinceInput)*(80 + (20*sin(ofGetElapsedTimef()*8)*.5+.5)));
 			ofRect(trackit->second->getTrack()->getDrawRect());
 		}
+        trackit->second->draw();
 	}
 	ofPopStyle();
 
@@ -1487,9 +1512,9 @@ void DurationController::loadProject(string projectPath, string projectName, boo
 				if(displayName != ""){
 					newTrack->setDisplayName(displayName);
 				}
-
-				headerTrack->setSendOSC(projectSettings.getValue("sendOSC", true));
-				headerTrack->setReceiveOSC(projectSettings.getValue("receiveOSC", true));
+//                headerTrack->setSendOSC(projectSettings.getValue("sendOSC", true));
+				headerTrack->setOscOut(projectSettings.getValue("sendOSC", true));
+				headerTrack->setReceiveOSC(projectSettings.getValue("receiveOSC", false));
 			}
             projectSettings.popTag(); //track
         }
@@ -1590,7 +1615,8 @@ void DurationController::saveProject(){
             projectSettings.addValue("trackName",tracks[t]->getName());
             projectSettings.addValue("displayName",tracks[t]->getDisplayName());
             //save custom gui props
-            projectSettings.addValue("sendOSC", headers[trackName]->sendOSC());
+//            projectSettings.addValue("sendOSC", headers[trackName]->sendOSC());
+            projectSettings.addValue("sendOSC", headers[trackName]->getOscOut());
 			projectSettings.addValue("receiveOSC", headers[trackName]->receiveOSC());
             if(trackType == "Curves" || trackType == "LFO"){
                 ofxTLKeyframes* curves = (ofxTLKeyframes*)tracks[t];

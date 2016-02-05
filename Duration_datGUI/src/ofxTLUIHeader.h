@@ -36,6 +36,7 @@
 #include "ofxTimeline.h"
 #include "ofxUI.h"
 #include "ofxLocalization.h"
+#include "ofxDatGui.h"
 
 class ofxTLUIHeader {
   public:
@@ -43,17 +44,19 @@ class ofxTLUIHeader {
     virtual ~ofxTLUIHeader();
     
     void setTrackHeader(ofxTLTrackHeader* trackHeader);
-	virtual void viewWasResized(ofEventArgs& args); 
+	virtual void viewWasResized(ofEventArgs& args);
     virtual void guiEvent(ofxUIEventArgs &e);
     
 	virtual bool getShouldDelete();
 	virtual void setShouldDelete(bool del);
 	
-    virtual bool sendOSC();
-    virtual void setSendOSC(bool enable);
+//    virtual bool sendOSC();
+//    virtual void setSendOSC(bool enable);
     virtual bool receiveOSC();
     virtual void setReceiveOSC(bool enable);
 
+    virtual void draw();
+    virtual void update();
 //	string getPalettePath();
 	
 	//just for drawing the red receiver background
@@ -90,6 +93,10 @@ class ofxTLUIHeader {
 	void setValueMin(float min);
 	void setValueMax(float max);
 	
+    // Eloi's Dat Gui
+    bool getOscOut() {return guiOscOut->getEnabled();};
+    void setOscOut(bool b) {guiOscOut->setEnabled(b);};
+    
   protected:
     
     ofxUICanvas* gui;
@@ -102,7 +109,7 @@ class ofxTLUIHeader {
 	ofxUILabelButton* resetRange;
 	//Delay dialer?
 	
-    ofxUIToggle* sendOSCEnable;
+//    ofxUIToggle* sendOSCEnable;
 	ofxUIToggle* receiveOSCEnable;
 	bool resizeEventsEnabled;
 	int audioNumberOfBins;
@@ -110,4 +117,14 @@ class ofxTLUIHeader {
 	string trackType;
     bool shouldDelete;
 	bool modified;
+    
+    // Eloi's Dat Gui
+    void onButtonEvent(ofxDatGuiButtonEvent e);
+
+    int headerGuiComponentWidth;
+    vector<ofxDatGuiComponent*> headerGuiComponents;
+    ofxDatGuiLabel* guiLabel;
+    ofxDatGuiTextInput* guiDelay;
+    ofxDatGuiToggle*    guiOscOut;
+    
 };

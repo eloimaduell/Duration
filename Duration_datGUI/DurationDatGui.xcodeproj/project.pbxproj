@@ -892,14 +892,14 @@
 		B042D26B1C5F5A5F0088217E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B042D2721C5F5A5F0088217E /* ofxTimeline.cpp */,
+				B042D2731C5F5A5F0088217E /* ofxTimeline.h */,
 				B042D26C1C5F5A5F0088217E /* ofxHotKeys.h */,
 				B042D26D1C5F5A5F0088217E /* ofxHotKeys_impl_linux.cpp */,
 				B042D26E1C5F5A5F0088217E /* ofxHotKeys_impl_mac.mm */,
 				B042D26F1C5F5A5F0088217E /* ofxHotKeys_impl_win.cpp */,
 				B042D2701C5F5A5F0088217E /* ofxRemoveCocoaMenu.h */,
 				B042D2711C5F5A5F0088217E /* ofxRemoveCocoaMenu.mm */,
-				B042D2721C5F5A5F0088217E /* ofxTimeline.cpp */,
-				B042D2731C5F5A5F0088217E /* ofxTimeline.h */,
 				B042D2741C5F5A5F0088217E /* ofxTLAudioTrack.cpp */,
 				B042D2751C5F5A5F0088217E /* ofxTLAudioTrack.h */,
 				B042D2761C5F5A5F0088217E /* ofxTLBangs.cpp */,
