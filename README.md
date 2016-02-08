@@ -1,10 +1,14 @@
 # [Duration](http://duration.cc)
 
+EloiMaduell :: I'm rebuilding it for OF 0.9 and changing ofxUI for ofxDatGui .
+
 ## Timeline for creative code 
+
 
 Duration controls change over time. With a simple one window approach, the cross platform stand alone application manages lists of tracks to compose changing data over a fixed duration.
 
 The application sends values over OSC and can be configured through OSC messages.
+
 
 ![DurationInterface](http://www.duration.cc/assets/images/duration_screen.png)
 

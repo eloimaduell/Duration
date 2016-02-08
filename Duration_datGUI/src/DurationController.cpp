@@ -62,9 +62,10 @@ void DurationController::enableInterface(){
 		gui->disableAppEventCallbacks();
 		timeline.enable();
 		map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
-		while(it != headers.end()){
-			it->second->getGui()->enable();
-			it++;
+		while(it != headers.end())
+        {
+            it->second->setShowGui(true);
+            it++;
 		}
 	}
 }
@@ -78,9 +79,10 @@ void DurationController::disableInterface(){
 		gui->disable();
 		timeline.disable();
 		map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
-		while(it != headers.end()){
-			it->second->getGui()->disable();
-			it++;
+		while(it != headers.end())
+        {
+            it->second->setShowGui(false);
+            it++;
 		}
 	}
 }
@@ -280,50 +282,76 @@ void DurationController::threadedFunction(){
 	}
 }
 
-void DurationController::handleOscIn(){
+void DurationController::handleOscIn()
+{
 	if(!settings.oscInEnabled){
 		return;
 	}
 
 	//TODO: move parsing and receing to separate different threads?
 	long timelineStartTime = timeline.getCurrentTimeMillis();
-	while(receiver.hasWaitingMessages()){
+	while(receiver.hasWaitingMessages())
+    {
 
 		ofxOscMessage m;
 		receiver.getNextMessage(&m);
 		bool handled = false;
 		long startTime = recordTimer.getAppTimeMicros();
 		vector<ofxTLPage*>& pages = timeline.getPages();
-		for(int i = 0; i < pages.size(); i++){
+		
+        for(int i = 0; i < pages.size(); i++)
+        {
 			vector<ofxTLTrack*>& tracks = pages[i]->getTracks();
-			for(int t = 0; t < tracks.size(); t++){
-//				cout << " testing against " << "/"+tracks[t]->getDisplayName() << endl;
-				ofxTLTrack* track = tracks[t];
-				ofPtr<ofxTLUIHeader> header = headers[track->getName()];
-				if(header->receiveOSC() && m.getAddress() == ofFilePath::addLeadingSlash(track->getDisplayName()) ){
-
-					if(timeline.getIsPlaying() ){ //TODO: change to isPlaying() && isRecording()
-						if(track->getTrackType() == "Curves"){
-							ofxTLCurves* curves = (ofxTLCurves*)track;
-//							cout << "adding value " << m.getArgAsFloat(0) << endl;
-							if(m.getArgType(0) == OFXOSC_TYPE_FLOAT){
-								float value = m.getArgAsFloat(0);
-								if(value != header->lastValueReceived || !header->hasReceivedValue){
-									curves->addKeyframeAtMillis(value, timelineStartTime);
-									header->lastValueReceived = value;
-									header->hasReceivedValue = true;
-								}
-							}
-						}
-						else if(track->getTrackType() == "Bangs"){
-							ofxTLBangs* bangs = (ofxTLBangs*)track;
-							bangs->addKeyframeAtMillis(0,timelineStartTime);
-						}
-					}
-
-					header->lastInputReceivedTime = recordTimer.getAppTimeSeconds();
-					handled = true;
-				}
+            
+            //headerGui = (ofxTLUIHeader*) headerAudio;
+            
+			for(int t = 0; t < tracks.size(); t++)
+            {
+                //
+                // oscIn is just available on Curves and Bangs !!
+                // http://stackoverflow.com/questions/15326186/how-to-call-child-method-from-a-parent-pointer-in-c
+                //
+                
+                bool isOscIn=false;
+                ofxTLTrack* track = tracks[t];
+                ofPtr<ofxTLUIHeader> header = headers[track->getName()];
+                
+                if( (track->getTrackType() == "Curves") || (track->getTrackType() == "Bangs"))
+                {
+                    ofxTLUIHeader* h = header.get();
+                    ofxTLUIHeaderCurves* headerCurves;
+                    isOscIn = ((ofxTLUIHeaderCurves *)h)->getOscIn();
+                   
+                    if( isOscIn && m.getAddress() == ofFilePath::addLeadingSlash(track->getDisplayName()) )
+                    {
+                        
+                        if(timeline.getIsPlaying() ){ //TODO: change to isPlaying() && isRecording()
+                            if(track->getTrackType() == "Curves"){
+                                ofxTLCurves* curves = (ofxTLCurves*)track;
+                                //							cout << "adding value " << m.getArgAsFloat(0) << endl;
+                                if(m.getArgType(0) == OFXOSC_TYPE_FLOAT){
+                                    float value = m.getArgAsFloat(0);
+                                    if(value != header->lastValueReceived || !header->hasReceivedValue){
+                                        curves->addKeyframeAtMillis(value, timelineStartTime);
+                                        header->lastValueReceived = value;
+                                        header->hasReceivedValue = true;
+                                    }
+                                }
+                            }
+                            else if(track->getTrackType() == "Bangs"){
+                                ofxTLBangs* bangs = (ofxTLBangs*)track;
+                                bangs->addKeyframeAtMillis(0,timelineStartTime);
+                            }
+                        }
+                        
+                        header->lastInputReceivedTime = recordTimer.getAppTimeSeconds();
+                        handled = true;
+                    }
+                }
+                else if(track->getTrackType() == "Bangs")
+                {
+                    
+                }
 			}
 		}
 
@@ -533,8 +561,26 @@ void DurationController::handleOscIn(){
 			else if(m.getNumArgs() == 2 && m.getArgType(0) == OFXOSC_TYPE_STRING && m.getArgType(1) == OFXOSC_TYPE_INT32){
 				string trackName = m.getArgAsString(0);
 				ofPtr<ofxTLUIHeader> header = getHeaderWithDisplayName(trackName);
-				if(header != NULL){
-					header->setReceiveOSC(m.getArgAsInt32(1) == 1);
+                
+                //
+                // oscIn is just available on Curves and Bangs !!
+                // http://stackoverflow.com/questions/15326186/how-to-call-child-method-from-a-parent-pointer-in-c
+                //
+
+				if(header != NULL)
+                {
+                    ofxTLUIHeader* h = header.get();
+                    
+                    if(header.get()->getTrack()->getTrackType()=="Curves")
+                    {
+                        ofxTLUIHeaderCurves* headerCurves;
+                        ((ofxTLUIHeaderCurves *)h)->setOscIn(m.getArgAsInt32(1) == 1);
+                    }
+                    else if (header.get()->getTrack()->getTrackType()=="Bangs")
+                    {
+                        ofxTLUIHeaderBangs* headerCurves;
+                        ((ofxTLUIHeaderBangs *)h)->setOscIn(m.getArgAsInt32(1) == 1);
+                    }
 				}
 				else {
 					ofLogError("Duration:OSC") << " Enable in out failed. track not found " << trackName;
@@ -613,9 +659,17 @@ void DurationController::handleOscIn(){
 				string trackName = m.getArgAsString(0);
 				ofPtr<ofxTLUIHeader> header = getHeaderWithDisplayName(trackName);
 				if(header != NULL){
-					if(header->getTrackType() == "Curves" || header->getTrackType() == "LFO"){
-						header->setValueRange(ofRange(m.getArgAsFloat(1),m.getArgAsFloat(2)));
+					if(header->getTrackType() == "Curves" )
+                    {
+                        ofxTLUIHeader* h = header.get();
+                        ofxTLUIHeaderCurves* headerCurves;
+                        ((ofxTLUIHeaderCurves *)h)->setMinMax(m.getArgAsFloat(1),m.getArgAsFloat(2));
+						//header->setValueRange(ofRange(m.getArgAsFloat(1),m.getArgAsFloat(2)));
 					}
+                    else if( header->getTrackType() == "LFO")
+                    {
+                        
+                    }
 					else {
 						ofLogError("Duration:OSC") << "Set value range failed, track is not a Curves track " << trackName;
 					}
@@ -636,9 +690,17 @@ void DurationController::handleOscIn(){
 				string trackName = m.getArgAsString(0);
 				ofPtr<ofxTLUIHeader> header = getHeaderWithDisplayName(trackName);
 				if(header != NULL){
-					if(header->getTrackType() == "Curves" || header->getTrackType() == "LFO"){
-						header->setValueMin(m.getArgAsFloat(1));
+					if(header->getTrackType() == "Curves")
+                    {
+                        ofxTLUIHeader* h = header.get();
+                        ofxTLUIHeaderCurves* headerCurves;
+                        ((ofxTLUIHeaderCurves *)h)->setMin(m.getArgAsFloat(1));
+                        //header->setValueMin(m.getArgAsFloat(1));
 					}
+                    else if(header->getTrackType() == "LFO")
+                    {
+
+                    }
 					else{
 						ofLogError("Duration:OSC") << "Set value range min failed, track is not a Curves track " << trackName;
 					}
@@ -659,9 +721,17 @@ void DurationController::handleOscIn(){
 				string trackName = m.getArgAsString(0);
 				ofPtr<ofxTLUIHeader> header = getHeaderWithDisplayName(trackName);
 				if(header != NULL){
-					if(header->getTrackType() == "Curves" || header->getTrackType() == "LFO"){
-						header->setValueMax(m.getArgAsFloat(1));
-					}
+                    if(header->getTrackType() == "Curves")
+                    {
+                        ofxTLUIHeader* h = header.get();
+                        ofxTLUIHeaderCurves* headerCurves;
+                        ((ofxTLUIHeaderCurves *)h)->setMax(m.getArgAsFloat(1));
+                        //header->setValueMin(m.getArgAsFloat(1));
+                    }
+                    else if(header->getTrackType() == "LFO")
+                    {
+                        
+                    }
 					else{
 						ofLogError("Duration:OSC") << "Set value range max failed, track is not a Curves track " << trackName;
 					}
@@ -795,8 +865,10 @@ void DurationController::handleOscOut(){
                         messageValid = true;
                     }
                 }
-				if(messageValid){
-					m.setAddress(ofFilePath::addLeadingSlash(tracks[t]->getDisplayName()));
+				if(messageValid)
+                {
+                    ofxTLUIHeader* h = headers[tracks[t]->getName()].get();
+					m.setAddress(ofFilePath::addLeadingSlash( h->getOscAddress()) );
 					bundle.addMessage(m);
 					numMessages++;
 				}
@@ -843,11 +915,21 @@ void DurationController::bangFired(ofxTLBangEventArgs& bang){
 
     
     string trackType = bang.track->getTrackType();
-    if(!headers[bang.track->getName()]->getOscOut()){
-        return;
+    
+    if(headers[bang.track->getName()]!=NULL)
+    {
+        if(!headers[bang.track->getName()]->getOscOut()){
+            return;
+        }
     }
+
+    
     ofxOscMessage m;
-    m.setAddress( ofFilePath::addLeadingSlash(bang.track->getDisplayName()) );
+
+    ofxTLUIHeader* h = headers[bang.track->getName()].get();
+    m.setAddress(ofFilePath::addLeadingSlash( h->getOscAddress()) );
+
+//    m.setAddress( ofFilePath::addLeadingSlash(bang.track->getDisplayName()) );
 
     if(trackType == "Flags")
     {
@@ -1191,11 +1273,15 @@ void DurationController::update(ofEventArgs& args){
 
 		needsSave |= it->second->getModified();
 
-		if(timeline.isModal() && it->second->getGui()->isEnabled()){
-			it->second->getGui()->disable();
-		}
-		else if(!timeline.isModal() && !it->second->getGui()->isEnabled()){
-			it->second->getGui()->enable();
+        void setEnabledGui(bool b);
+        bool getEnabledGui();
+
+		if(timeline.isModal() && it->second->getEnabledGui())
+        {
+            it->second->setEnabledGui(false);
+        }
+		else if(!timeline.isModal() && !it->second->getEnabledGui()){
+            it->second->setEnabledGui(true);
 		}
 
 		if(it->second->getShouldDelete()){
@@ -1242,6 +1328,8 @@ ofPtr<ofxTLUIHeader> DurationController::getHeaderWithDisplayName(string name){
 //--------------------------------------------------------------
 void DurationController::draw(ofEventArgs& args){
 
+    timeline.draw();
+
 	//go through and draw all the overlay backgrounds to indicate 'hot' track sfor recording
 	ofPushStyle();
 	map<string, ofPtr<ofxTLUIHeader> >::iterator trackit;
@@ -1258,7 +1346,6 @@ void DurationController::draw(ofEventArgs& args){
 	}
 	ofPopStyle();
 
-	timeline.draw();
 	gui->draw();
 
 	if(needsSave || timeline.hasUnsavedChanges()){
@@ -1487,17 +1574,28 @@ void DurationController::loadProject(string projectPath, string projectName, boo
             ofxTLTrack* newTrack = addTrack(trackType, trackName, trackFilePath);
 
 			//custom setup
-			if(newTrack != NULL){
-				ofPtr<ofxTLUIHeader> headerTrack = headers[newTrack->getName()];
-				if(newTrack->getTrackType() == "Curves" || newTrack->getTrackType() == "LFO"){
-					headerTrack->setValueRange(ofRange(projectSettings.getValue("min", 0.0),
-													   projectSettings.getValue("max", 1.0)));
+			if(newTrack != NULL)
+            {
+                ofPtr<ofxTLUIHeader> headerTrack = headers[newTrack->getName()];
+                ofxTLUIHeader* h = headerTrack.get();
+                
+                if(headerTrack.get()->getTrack()->getTrackType()=="Curves")
+                {
+                    ofxTLUIHeaderCurves* headerCurves;
+                    ((ofxTLUIHeaderCurves *)h)->setMinMax(projectSettings.getValue("min", 0.0),projectSettings.getValue("max", 1.0));
+                }
+                else if (headerTrack.get()->getTrack()->getTrackType()=="LFO")
+                {
+                    ofxTLUIHeaderLFO* headerLFO;
+                    ((ofxTLUIHeaderLFO *)h)->setMinMax(projectSettings.getValue("min", 0.0),projectSettings.getValue("max", 1.0));
 				}
-				else if(newTrack->getTrackType() == "Colors"){
+				else if(newTrack->getTrackType() == "Colors")
+                {
 					ofxTLColorTrack* colors = (ofxTLColorTrack*)newTrack;
 					colors->loadColorPalette(projectSettings.getValue("palette", timeline.getDefaultColorPalettePath()));
 				}
-				else if(newTrack->getTrackType() == "Audio"){
+				else if(newTrack->getTrackType() == "Audio")
+                {
 					string clipPath = projectSettings.getValue("clip", "");
 					if(clipPath != ""){
 						audioTrack->loadSoundfile(clipPath);
@@ -1513,8 +1611,32 @@ void DurationController::loadProject(string projectPath, string projectName, boo
 					newTrack->setDisplayName(displayName);
 				}
 //                headerTrack->setSendOSC(projectSettings.getValue("sendOSC", true));
-				headerTrack->setOscOut(projectSettings.getValue("sendOSC", true));
-				headerTrack->setReceiveOSC(projectSettings.getValue("receiveOSC", false));
+				headerTrack->setOscOut(projectSettings.getValue("sendOSC", false));
+                headerTrack->setOscAddress(projectSettings.getValue("OSCaddress","/default"));
+                
+                //
+                // oscIn is just available on Curves and Bangs !!
+                // http://stackoverflow.com/questions/15326186/how-to-call-child-method-from-a-parent-pointer-in-c
+                //
+
+                
+                if(headerTrack != NULL)
+                {
+                    ofxTLUIHeader* h = headerTrack.get();
+                    bool isOscIn = projectSettings.getValue("receiveOSC", false);
+                    
+                    if(headerTrack.get()->getTrack()->getTrackType()=="Curves")
+                    {
+                        ofxTLUIHeaderCurves* headerCurves;
+                        ((ofxTLUIHeaderCurves *)h)->setOscIn(isOscIn);
+                    }
+                    else if (headerTrack.get()->getTrack()->getTrackType()=="Bangs")
+                    {
+                        ofxTLUIHeaderBangs* headerCurves;
+                        ((ofxTLUIHeaderBangs *)h)->setOscIn(isOscIn);
+                    }
+//                                        header->setOscIn(m.getArgAsInt32(1) == 1);
+                }
 			}
             projectSettings.popTag(); //track
         }
@@ -1616,8 +1738,35 @@ void DurationController::saveProject(){
             projectSettings.addValue("displayName",tracks[t]->getDisplayName());
             //save custom gui props
 //            projectSettings.addValue("sendOSC", headers[trackName]->sendOSC());
+            projectSettings.addValue("OSCaddress", headers[trackName]->getOscAddress());
             projectSettings.addValue("sendOSC", headers[trackName]->getOscOut());
-			projectSettings.addValue("receiveOSC", headers[trackName]->receiveOSC());
+            
+            //
+            // oscIn is just available on Curves and Bangs !!
+            // http://stackoverflow.com/questions/15326186/how-to-call-child-method-from-a-parent-pointer-in-c
+            //
+
+            ofxTLUIHeader* h = headers[trackName].get();
+            bool isOscIn = projectSettings.getValue("receiveOSC", false);
+            
+            if(headers[trackName].get()->getTrack()->getTrackType()=="Curves")
+            {
+                ofxTLUIHeaderCurves* headerCurves;
+                bool b = ((ofxTLUIHeaderCurves *)h)->getOscIn();
+                projectSettings.addValue("receiveOSC",b);
+                
+            }
+            else if (headers[trackName].get()->getTrack()->getTrackType()=="Bangs")
+            {
+                ofxTLUIHeaderBangs* headerCurves;
+                bool b = ((ofxTLUIHeaderBangs *)h)->getOscIn();
+                projectSettings.addValue("receiveOSC",b);
+            }
+
+//            bool b = ((ofxTLUIHeaderCurves *)h)->getOscIn();
+//            projectSettings.addValue("receiveOSC",b);
+            
+            
             if(trackType == "Curves" || trackType == "LFO"){
                 ofxTLKeyframes* curves = (ofxTLKeyframes*)tracks[t];
                 projectSettings.addValue("min", curves->getValueRange().min);
@@ -1674,12 +1823,47 @@ void DurationController::saveProject(){
 }
 
 //--------------------------------------------------------------
-ofxTLUIHeader* DurationController::createHeaderForTrack(ofxTLTrack* track){
-    ofxTLUIHeader* headerGui = new ofxTLUIHeader();
+ofxTLUIHeader* DurationController::createHeaderForTrack(ofxTLTrack* track)
+{
+    string trackT = track->getTrackType();
+    ofxTLUIHeader* headerGui;
+    
+    if(trackT=="Audio")
+    {
+        ofxTLUIHeaderAudio* headerAudio = new ofxTLUIHeaderAudio();
+        headerGui = (ofxTLUIHeader*) headerAudio;
+    }
+    else if(trackT=="Colors")
+    {
+        ofxTLUIHeaderColor* headerColor = new ofxTLUIHeaderColor();
+        headerGui = (ofxTLUIHeader*) headerColor;
+    }
+    else if(trackT=="Curves")
+    {
+        ofxTLUIHeaderCurves* headerCurves = new ofxTLUIHeaderCurves();
+        headerGui = (ofxTLUIHeader*) headerCurves;
+    }
+    else if(trackT=="Bangs")
+    {
+        ofxTLUIHeaderBangs* headerBangs = new ofxTLUIHeaderBangs();
+        headerGui= (ofxTLUIHeader*) headerBangs;
+    }
+    else if(trackT=="LFO")
+    {
+        ofxTLUIHeaderLFO* headerLFO = new ofxTLUIHeaderLFO();
+        headerGui= (ofxTLUIHeader*) headerLFO;
+    }
+    else
+    {
+        headerGui = new ofxTLUIHeader();
+    }
+     
 	headerGui->translation = &translation;
     ofxTLTrackHeader* header = timeline.getTrackHeader(track);
     headerGui->setTrackHeader(header);
     headers[track->getName()] = ofPtr<ofxTLUIHeader>( headerGui );
+    
+    cout << "DurationCtrl :: createHeaderForTrack :: " << track->getDisplayName() << " . " << track->getTrackType() << endl;
     return headerGui;
 }
 

@@ -26,6 +26,8 @@
 		9266028E1AECBB027ABF64D8 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26E160699149D8AF609734A1 /* ofxEasing.cpp */; };
 		933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B40EDA85BEB63E46785BC29 /* tinyxml.cpp */; };
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
+		B00BBFB61C66A1FA003A49F5 /* ofxTLUIHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B00BBFB41C66A1FA003A49F5 /* ofxTLUIHeader.cpp */; settings = {ASSET_TAGS = (); }; };
+		B00BBFB91C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B00BBFB71C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D09D1C5F59180088217E /* ofxDatGuiComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D0631C5F59180088217E /* ofxDatGuiComponent.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D09E1C5F59180088217E /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D0681C5F59180088217E /* ofxDatGui.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2C31C5F5A5F0088217E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = B042D2251C5F5A5F0088217E /* kiss_fft.c */; settings = {ASSET_TAGS = (); }; };
@@ -63,7 +65,6 @@
 		B042D2EF1C5F5A600088217E /* ofxTLVideoThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A31C5F5A5F0088217E /* ofxTLVideoThumb.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2F01C5F5A600088217E /* ofxTLVideoTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A51C5F5A5F0088217E /* ofxTLVideoTrack.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2F11C5F5A600088217E /* ofxTLZoomer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A71C5F5A5F0088217E /* ofxTLZoomer.cpp */; settings = {ASSET_TAGS = (); }; };
-		B049D5E01C45B7D7005F2021 /* ofxTLUIHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B049D5DE1C45B7D7005F2021 /* ofxTLUIHeader.cpp */; settings = {ASSET_TAGS = (); }; };
 		B049D5E31C45B7DE005F2021 /* DurationController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B049D5E11C45B7DE005F2021 /* DurationController.cpp */; settings = {ASSET_TAGS = (); }; };
 		B049D8AA1C45B828005F2021 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B049D8151C45B828005F2021 /* README.md */; settings = {ASSET_TAGS = (); }; };
 		B049D8AB1C45B828005F2021 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B049D8181C45B828005F2021 /* ofxUI2DGraph.cpp */; settings = {ASSET_TAGS = (); }; };
@@ -127,6 +128,10 @@
 		B049D92E1C45BA7A005F2021 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B049D92D1C45BA7A005F2021 /* CoreServices.framework */; };
 		B049D9301C45BA84005F2021 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B049D92F1C45BA84005F2021 /* IOKit.framework */; };
 		B049D9321C45BA8C005F2021 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B049D9311C45BA8C005F2021 /* CoreMedia.framework */; };
+		B06504A11C67A170000650D1 /* ofxTLUIHeaderBangs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B065049F1C67A170000650D1 /* ofxTLUIHeaderBangs.cpp */; settings = {ASSET_TAGS = (); }; };
+		B06504A51C67DF86000650D1 /* ofxTLUIHeaderLFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B06504A31C67DF86000650D1 /* ofxTLUIHeaderLFO.cpp */; settings = {ASSET_TAGS = (); }; };
+		B0676E7B1C66E768005D5716 /* ofxTLUIHeaderColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0676E791C66E768005D5716 /* ofxTLUIHeaderColor.cpp */; settings = {ASSET_TAGS = (); }; };
+		B0A952DA1C6768CD00652D17 /* ofxTLUIHeaderCurves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0A952D81C6768CD00652D17 /* ofxTLUIHeaderCurves.cpp */; settings = {ASSET_TAGS = (); }; };
 		B0BEFB971C45BB5F009B3404 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0BEFB701C45BB5F009B3404 /* ofxOscBundle.cpp */; settings = {ASSET_TAGS = (); }; };
 		B0BEFB981C45BB5F009B3404 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0BEFB721C45BB5F009B3404 /* ofxOscMessage.cpp */; settings = {ASSET_TAGS = (); }; };
 		B0BEFB991C45BB5F009B3404 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0BEFB741C45BB5F009B3404 /* ofxOscParameterSync.cpp */; settings = {ASSET_TAGS = (); }; };
@@ -214,6 +219,10 @@
 		A9FE46C20E767B29C5997AD3 /* ofxEasingBounce.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasingBounce.h; path = ../../../addons/ofxTween/src/Easings/ofxEasingBounce.h; sourceTree = SOURCE_ROOT; };
 		AC5DDD8BBD12E8E173E4AE81 /* ofxTextInputField.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTextInputField.h; path = ../../../addons/ofxTextInputField/src/ofxTextInputField.h; sourceTree = SOURCE_ROOT; };
 		AF17EB492DB2858A0EBD94CD /* ofxEasingCirc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasingCirc.h; path = ../../../addons/ofxTween/src/Easings/ofxEasingCirc.h; sourceTree = SOURCE_ROOT; };
+		B00BBFB41C66A1FA003A49F5 /* ofxTLUIHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeader.cpp; sourceTree = "<group>"; };
+		B00BBFB51C66A1FA003A49F5 /* ofxTLUIHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeader.h; sourceTree = "<group>"; };
+		B00BBFB71C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderAudio.cpp; sourceTree = "<group>"; };
+		B00BBFB81C66A2A1003A49F5 /* ofxTLUIHeaderAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderAudio.h; sourceTree = "<group>"; };
 		B042D04D1C5F59180088217E /* font-verdana.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-verdana.ttf"; sourceTree = "<group>"; };
 		B042D04E1C5F59180088217E /* icon-dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-dropdown.png"; sourceTree = "<group>"; };
 		B042D04F1C5F59180088217E /* icon-radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-radio-off.png"; sourceTree = "<group>"; };
@@ -317,8 +326,6 @@
 		B042D2A61C5F5A5F0088217E /* ofxTLVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoTrack.h; sourceTree = "<group>"; };
 		B042D2A71C5F5A5F0088217E /* ofxTLZoomer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLZoomer.cpp; sourceTree = "<group>"; };
 		B042D2A81C5F5A5F0088217E /* ofxTLZoomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLZoomer.h; sourceTree = "<group>"; };
-		B049D5DE1C45B7D7005F2021 /* ofxTLUIHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeader.cpp; sourceTree = "<group>"; };
-		B049D5DF1C45B7D7005F2021 /* ofxTLUIHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeader.h; sourceTree = "<group>"; };
 		B049D5E11C45B7DE005F2021 /* DurationController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DurationController.cpp; sourceTree = "<group>"; };
 		B049D5E21C45B7DE005F2021 /* DurationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationController.h; sourceTree = "<group>"; };
 		B049D8151C45B828005F2021 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -435,7 +442,15 @@
 		B049D92D1C45BA7A005F2021 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		B049D92F1C45BA84005F2021 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		B049D9311C45BA8C005F2021 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		B065049F1C67A170000650D1 /* ofxTLUIHeaderBangs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderBangs.cpp; sourceTree = "<group>"; };
+		B06504A01C67A170000650D1 /* ofxTLUIHeaderBangs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderBangs.h; sourceTree = "<group>"; };
+		B06504A31C67DF86000650D1 /* ofxTLUIHeaderLFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderLFO.cpp; sourceTree = "<group>"; };
+		B06504A41C67DF86000650D1 /* ofxTLUIHeaderLFO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderLFO.h; sourceTree = "<group>"; };
+		B0676E791C66E768005D5716 /* ofxTLUIHeaderColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderColor.cpp; sourceTree = "<group>"; };
+		B0676E7A1C66E768005D5716 /* ofxTLUIHeaderColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderColor.h; sourceTree = "<group>"; };
 		B07C508E7717E6C892502ADF /* ofxEasingQuad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasingQuad.h; path = ../../../addons/ofxTween/src/Easings/ofxEasingQuad.h; sourceTree = SOURCE_ROOT; };
+		B0A952D81C6768CD00652D17 /* ofxTLUIHeaderCurves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderCurves.cpp; sourceTree = "<group>"; };
+		B0A952D91C6768CD00652D17 /* ofxTLUIHeaderCurves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderCurves.h; sourceTree = "<group>"; };
 		B0BEFB6E1C45BB5F009B3404 /* ofxOsc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOsc.h; sourceTree = "<group>"; };
 		B0BEFB6F1C45BB5F009B3404 /* ofxOscArg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOscArg.h; sourceTree = "<group>"; };
 		B0BEFB701C45BB5F009B3404 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscBundle.cpp; sourceTree = "<group>"; };
@@ -684,6 +699,25 @@
 				95C5241B62F5D1F0FE6C067B /* ofxTimecode.h */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		B00BBFB31C66A1FA003A49F5 /* ofxTLUIHeader */ = {
+			isa = PBXGroup;
+			children = (
+				B06504A31C67DF86000650D1 /* ofxTLUIHeaderLFO.cpp */,
+				B06504A41C67DF86000650D1 /* ofxTLUIHeaderLFO.h */,
+				B065049F1C67A170000650D1 /* ofxTLUIHeaderBangs.cpp */,
+				B06504A01C67A170000650D1 /* ofxTLUIHeaderBangs.h */,
+				B0A952D81C6768CD00652D17 /* ofxTLUIHeaderCurves.cpp */,
+				B0A952D91C6768CD00652D17 /* ofxTLUIHeaderCurves.h */,
+				B0676E791C66E768005D5716 /* ofxTLUIHeaderColor.cpp */,
+				B0676E7A1C66E768005D5716 /* ofxTLUIHeaderColor.h */,
+				B00BBFB71C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp */,
+				B00BBFB81C66A2A1003A49F5 /* ofxTLUIHeaderAudio.h */,
+				B00BBFB41C66A1FA003A49F5 /* ofxTLUIHeader.cpp */,
+				B00BBFB51C66A1FA003A49F5 /* ofxTLUIHeader.h */,
+			);
+			path = ofxTLUIHeader;
 			sourceTree = "<group>";
 		};
 		B042CEE71C5F59170088217E /* ofxDatGui */ = {
@@ -1292,10 +1326,9 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B00BBFB31C66A1FA003A49F5 /* ofxTLUIHeader */,
 				B049D5E11C45B7DE005F2021 /* DurationController.cpp */,
 				B049D5E21C45B7DE005F2021 /* DurationController.h */,
-				B049D5DE1C45B7D7005F2021 /* ofxTLUIHeader.cpp */,
-				B049D5DF1C45B7D7005F2021 /* ofxTLUIHeader.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -1405,16 +1438,21 @@
 				B042D2E01C5F5A5F0088217E /* ofxTLEmptyTrack.cpp in Sources */,
 				B042D2D61C5F5A5F0088217E /* ofxRemoveCocoaMenu.mm in Sources */,
 				B042D2D71C5F5A5F0088217E /* ofxTimeline.cpp in Sources */,
+				B06504A51C67DF86000650D1 /* ofxTLUIHeaderLFO.cpp in Sources */,
 				B049D8BB1C45B828005F2021 /* ofxUIImageToggle.cpp in Sources */,
 				B049D8C91C45B828005F2021 /* ofxUISlider.cpp in Sources */,
 				B049D8D51C45B828005F2021 /* ofxUIWidget.cpp in Sources */,
+				B00BBFB91C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp in Sources */,
 				B042D2DF1C5F5A5F0088217E /* ofxTLEmptyKeyframes.cpp in Sources */,
 				B049D8C61C45B828005F2021 /* ofxUIRectangle.cpp in Sources */,
+				B0A952DA1C6768CD00652D17 /* ofxTLUIHeaderCurves.cpp in Sources */,
 				B049D8AC1C45B828005F2021 /* ofxUI2DPad.cpp in Sources */,
 				B042D2EB1C5F5A600088217E /* ofxTLTicker.cpp in Sources */,
 				B042D2C41C5F5A5F0088217E /* kiss_fftr.c in Sources */,
 				B049D8B01C45B828005F2021 /* ofxUICanvas.cpp in Sources */,
+				B06504A11C67A170000650D1 /* ofxTLUIHeaderBangs.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				B0676E7B1C66E768005D5716 /* ofxTLUIHeaderColor.cpp in Sources */,
 				B0BEFB991C45BB5F009B3404 /* ofxOscParameterSync.cpp in Sources */,
 				B0BEFB9D1C45BB5F009B3404 /* NetworkingUtils.cpp in Sources */,
 				B049D8CC1C45B828005F2021 /* ofxUISpectrum.cpp in Sources */,
@@ -1423,6 +1461,7 @@
 				B049D8D61C45B828005F2021 /* ofxUIWidgetWithLabel.cpp in Sources */,
 				B049D8C71C45B828005F2021 /* ofxUIRotarySlider.cpp in Sources */,
 				B042D2E51C5F5A600088217E /* ofxTLInOut.cpp in Sources */,
+				B00BBFB61C66A1FA003A49F5 /* ofxTLUIHeader.cpp in Sources */,
 				B049D9131C45B847005F2021 /* README.md in Sources */,
 				B042D2D51C5F5A5F0088217E /* ofxHotKeys_impl_win.cpp in Sources */,
 				B049D8B31C45B828005F2021 /* ofxUIDropDownList.cpp in Sources */,
@@ -1484,7 +1523,6 @@
 				B042D2C31C5F5A5F0088217E /* kiss_fft.c in Sources */,
 				B0BEFB9C1C45BB5F009B3404 /* IpEndpointName.cpp in Sources */,
 				B049D8B61C45B828005F2021 /* ofxUIFPSSlider.cpp in Sources */,
-				B049D5E01C45B7D7005F2021 /* ofxTLUIHeader.cpp in Sources */,
 				B049D8D41C45B828005F2021 /* ofxUIWaveform.cpp in Sources */,
 				B049D8AF1C45B828005F2021 /* ofxUIButton.cpp in Sources */,
 				7E769097DE6561633305B24C /* ofxEasingQuint.cpp in Sources */,

@@ -30,16 +30,25 @@
  *
  */
 
+
+// TODO ELOI
+// * if i have a "flags.xml" already on the data folder and i add a flags tracks ... it crashes when firing bang on the new flags track?
+
 #pragma once
 
 #include "ofMain.h"
 #include "ofxOsc.h"
 #include "ofxTimeline.h"
 #include "ofxMSATimer.h"
-#include "ofxTLUIHeader.h"
 #include "ofxUI.h"
 #include "ofxLocalization.h"
-#include "ofxTLAudioTrack.h"
+#include "ofxTLaudioTrack.h"
+#include "ofxTLUIHeader.h"
+#include "ofxTLUIHeaderAudio.h"
+#include "ofxTLUIHeaderColor.h"
+#include "ofxTLUIHeaderCurves.h"
+#include "ofxTLUIHeaderBangs.h"
+#include "ofxTLUIHeaderLFO.h"
 
 typedef struct {
     string path; //full project path

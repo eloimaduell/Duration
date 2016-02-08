@@ -34,7 +34,7 @@
 #include "ofMain.h"
 
 #include "ofxTimeline.h"
-#include "ofxUI.h"
+//#include "ofxUI.h"
 #include "ofxLocalization.h"
 #include "ofxDatGui.h"
 
@@ -45,15 +45,14 @@ class ofxTLUIHeader {
     
     void setTrackHeader(ofxTLTrackHeader* trackHeader);
 	virtual void viewWasResized(ofEventArgs& args);
-    virtual void guiEvent(ofxUIEventArgs &e);
     
 	virtual bool getShouldDelete();
 	virtual void setShouldDelete(bool del);
-	
+
 //    virtual bool sendOSC();
 //    virtual void setSendOSC(bool enable);
-    virtual bool receiveOSC();
-    virtual void setReceiveOSC(bool enable);
+//    virtual bool receiveOSC();
+//    virtual void setReceiveOSC(bool enable);
 
     virtual void draw();
     virtual void update();
@@ -78,7 +77,6 @@ class ofxTLUIHeader {
 	ofxTLTrackHeader* getTrackHeader();
 	string getTrackType();
 	ofxLocalization* translation;
-	ofxUICanvas* getGui();
 	bool getModified();
 	
 //	void setNumberOfbins(int bins);
@@ -89,29 +87,29 @@ class ofxTLUIHeader {
 //    void setBandsPerOctave(int bands);
 //    int getBandsPerOctave();
     
-	void setValueRange(ofRange range);
-	void setValueMin(float min);
-	void setValueMax(float max);
+//	void setValueRange(ofRange range);
+//	void setValueMin(float min);
+//	void setValueMax(float max);
 	
     // Eloi's Dat Gui
     bool getOscOut() {return guiOscOut->getEnabled();};
     void setOscOut(bool b) {guiOscOut->setEnabled(b);};
     
+    void setShowGui(bool b);
+    
+    void setEnabledGui(bool b);
+    bool getEnabledGui();
+    
+    string getOscAddress() {return guiOscAddressLabel->getLabel();};
+    void setOscAddress(string _s) {guiOscAddressLabel->setLabel(_s);};
+    
+    virtual void reorderGuiComponents();
+    
   protected:
     
-    ofxUICanvas* gui;
     ofxTLTrackHeader* trackHeader;
-	ofxUINumberDialer* minDialer;
-	ofxUINumberDialer* maxDialer;
-	ofxUITextInput* bins;
-	ofxUILabelButton* palette;
-	ofxUILabelButton* audioClip;
-	ofxUILabelButton* resetRange;
-	//Delay dialer?
-	
-//    ofxUIToggle* sendOSCEnable;
-	ofxUIToggle* receiveOSCEnable;
-	bool resizeEventsEnabled;
+
+    bool resizeEventsEnabled;
 	int audioNumberOfBins;
 	
 	string trackType;
@@ -119,12 +117,21 @@ class ofxTLUIHeader {
 	bool modified;
     
     // Eloi's Dat Gui
-    void onButtonEvent(ofxDatGuiButtonEvent e);
+    bool guiIsEnabled;
+    
+    virtual void onButtonEvent(ofxDatGuiButtonEvent e);
+    virtual void onTextInputEvent(ofxDatGuiTextInputEvent e);
 
     int headerGuiComponentWidth;
     vector<ofxDatGuiComponent*> headerGuiComponents;
-    ofxDatGuiLabel* guiLabel;
+    ofxDatGuiButton*     guiTrackName;
     ofxDatGuiTextInput* guiDelay;
     ofxDatGuiToggle*    guiOscOut;
+    ofxDatGuiButton*    guiPlaySolo;
+    ofxDatGuiButton*    guiDeleteTrack;
+    ofxDatGuiButton*    guiOscAddressButton;
+    ofxDatGuiLabel*     guiOscAddressLabel;
+
+
     
 };
