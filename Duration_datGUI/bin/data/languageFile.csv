@@ -6,7 +6,8 @@ curves,CURVES,カーブ,courbes,curve,Kurve
 colors,COLORS,カラー,couleurs,colori,Farbe
 audio,AUDIO,オーディオ,audio,audio,Audio
 lfo,LFO,LFO,lfo,lfo,LFO
-dropdown flags,DROPDOWN FLAGS,フラグ,dropdown flags,dropdown flags,dropdown flags
+dropdownflags,DROPDOWN FLAGS,フラグ,dropdownflags,dropdownflags,dropdownflags
+fileselectflags,FILE SELECT FLAGS,フラグ,fileselectflags,fileselectflags,fileselectflags
 bins,bins,bins,bins,bins,bins
 new project...,new project...,新規プロジェクト,nouveau projet,nuovo progetto,neues Projekt
 open project...,open project...,プロジェクトを開く,ouvrir projet,apri progetto,Projekt öffnen

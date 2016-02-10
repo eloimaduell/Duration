@@ -50,6 +50,7 @@
 #include "ofxTLUIHeaderBangs.h"
 #include "ofxTLUIHeaderLFO.h"
 
+
 typedef struct {
     string path; //full project path
     string name;
@@ -99,29 +100,56 @@ class DurationController : public ofThread  {
 	void guiEvent(ofxUIEventArgs& e);
     void exit(ofEventArgs& e);
 
+    // eloi DAT GUI
+    /////////////////
+    void setupMainGui();
+    vector<ofxDatGuiComponent*> mainGuiRowA;
+    vector<ofxDatGuiComponent*> mainGuiRowB;
+    float mainGuiComponentWidth;
+    virtual void onButtonEvent(ofxDatGuiButtonEvent e);
+    virtual void onTextInputEvent(ofxDatGuiTextInputEvent e);
+
+    // gui A
+    ofxDatGuiToggle* guiPlay;
+    ofxDatGuiButton* guiStop;
+    ofxDatGuiToggle* guiLoop;
+    ofxDatGuiToggle* guiOscOut;
+    ofxDatGuiTextInput* guiOscOutIP;
+    ofxDatGuiTextInput* guiOscOutPort;
+    ofxDatGuiToggle* guiOscIn;
+    ofxDatGuiTextInput* guiOscInPort;
+    // gui B
+    ofxDatGuiLabel* guiTime;
+    ofxDatGuiTextInput* guiDuration;
+    ofxDatGuiTextInput* guiBpmNum;
+    ofxDatGuiToggle* guiBpm;
+    
+    
+    //--
+    
 	ofxTLTrack* addTrack(string trackType, string trackName = "", string xmlFileName = "");
 
     //control elements
     ofxUIDropDownList* projectDropDown;
 	ofxUIMultiImageButton* saveButton;
-    ofxUILabel* timeLabel;
-    ofxUITextInput* durationLabel;
-    ofxUIMultiImageToggle* playpauseToggle;
-	ofxUIMultiImageButton* stopButton;
-    ofxUIMultiImageToggle* loopToggle;
+//    ofxUILabel* timeLabel;
+//    ofxUITextInput* durationLabel;
+//    ofxUIMultiImageToggle* playpauseToggle;
+//	ofxUIMultiImageButton* stopButton;
+//    ofxUIMultiImageToggle* loopToggle;
 
 	//project settings elements
-    ofxUILabelToggle* useBPMToggle;
-	ofxUINumberDialer* bpmDialer;
+//    ofxUILabelToggle* useBPMToggle;
+//	ofxUINumberDialer* bpmDialer;
 
 	//TODO: find a place for these
-    ofxUILabelToggle* snapToKeysToggle;
-
-    ofxUILabelToggle* enableOSCInToggle;
-	ofxUILabelToggle* enableOSCOutToggle;
-    ofxUITextInput* oscInPortInput;
-    ofxUITextInput* oscOutIPInput;
-    ofxUITextInput* oscOutPortInput;
+//    ofxUILabelToggle* snapToKeysToggle;
+//
+//    ofxUILabelToggle* enableOSCInToggle;
+//	ofxUILabelToggle* enableOSCOutToggle;
+//    ofxUITextInput* oscInPortInput;
+//    ofxUITextInput* oscOutIPInput;
+//    ofxUITextInput* oscOutPortInput;
 
     vector<string> trackTypes;
     ofxUIDropDownList* addTrackDropDown;

@@ -44,6 +44,7 @@ ofxTLUIHeaderAudio::ofxTLUIHeaderAudio()
     // specific gui for this class
     guiSelectAudio = new ofxDatGuiButton("SELECT AUDIO");
     guiSelectAudio->onButtonEvent(this, &ofxTLUIHeaderAudio::onButtonEvent);
+    guiSelectAudio->setBackgroundColor(ofColor(128,128,128));
     headerGuiComponents.push_back(guiSelectAudio);
 
     for(int i=0;i<headerGuiComponents.size();i++)

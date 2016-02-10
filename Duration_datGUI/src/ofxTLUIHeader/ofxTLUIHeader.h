@@ -97,6 +97,8 @@ class ofxTLUIHeader {
     
     void setShowGui(bool b);
     
+    void setTrackName(string s) {guiTrackName->setLabel(s);};
+    
     void setEnabledGui(bool b);
     bool getEnabledGui();
     
@@ -132,6 +134,9 @@ class ofxTLUIHeader {
     ofxDatGuiButton*    guiOscAddressButton;
     ofxDatGuiLabel*     guiOscAddressLabel;
 
-
+    ofColor trackCol;
+    ofColor oscCol;
+    ofColor valueCol;
+    ofColor deleteCol;
     
 };

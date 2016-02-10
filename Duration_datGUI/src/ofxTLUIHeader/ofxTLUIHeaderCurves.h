@@ -53,5 +53,8 @@ class ofxTLUIHeaderCurves : public ofxTLUIHeader
     ofxDatGuiToggle*    guiOscIn;
     ofxDatGuiTextInput* guiMin;
     ofxDatGuiTextInput* guiMax;
+    
+    virtual void reorderGuiComponents();
+
 
 };

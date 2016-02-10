@@ -66,7 +66,8 @@ ofxTLUIHeader::ofxTLUIHeader(){
     
     headerGuiComponentWidth = 120;
     guiTrackName = new ofxDatGuiButton("DEFAULT_NAME");
-    guiTrackName->setBackgroundColor(ofColor(0,20,40,255));
+    guiTrackName->setBackgroundColor(ofColor(200,200,200,255));
+    guiTrackName->setLabelColor(ofColor(0,0,0,255));
     guiPlaySolo = new ofxDatGuiButton("PLAY SOLO");
     guiDelay = new ofxDatGuiTextInput("DELAY MS.","0.000");
     guiOscOut = new ofxDatGuiToggle("OSC OUT",true);
@@ -76,7 +77,7 @@ ofxTLUIHeader::ofxTLUIHeader(){
     //guiOscAddressLabel->setLabelColor(ofColor(0,255,0));
     guiOscAddressLabel->setBackgroundColor(ofColor(80,80,80));
     
-    // DAAT GUI events
+    // DAT GUI events
     guiTrackName->onButtonEvent(this, &ofxTLUIHeader::onButtonEvent);
     guiPlaySolo->onButtonEvent(this, &ofxTLUIHeader::onButtonEvent);
     guiOscOut->onButtonEvent(this, &ofxTLUIHeader::onButtonEvent);
@@ -84,19 +85,24 @@ ofxTLUIHeader::ofxTLUIHeader(){
     guiOscAddressButton->onButtonEvent(this,&ofxTLUIHeader::onButtonEvent);
 
     // STRIPE colors
-    ofColor trackCol = ofColor(255,125,0);
+    trackCol = ofColor(255,125,0);
     guiTrackName->setStripeWidth(5);
     guiTrackName->setStripeColor(trackCol);
     guiPlaySolo->setStripeColor(trackCol);
     guiDelay->setStripeColor(trackCol);
     
-    ofColor oscCol = ofColor(0,125,255);
+//    oscCol = ofColor(0,120,255);
+    oscCol = ofColor(128,128,128);
     guiOscOut->setStripeColor(oscCol);
     guiOscAddressButton->setStripeColor(oscCol);
     guiOscAddressLabel->setStripeColor(oscCol);
     
-    ofColor redCol = ofColor(255,0,0);
-    guiDeleteTrack->setStripeColor(redCol);
+//    deleteCol = ofColor(255,0,0);
+    deleteCol = ofColor(128,128,128);
+    guiDeleteTrack->setStripeColor(deleteCol);
+
+    //valueCol = ofColor(0,255,120);
+    valueCol = ofColor(128,128,128);
     
     // array of gui components
     headerGuiComponents.push_back(guiTrackName);
@@ -145,7 +151,7 @@ void ofxTLUIHeader::update()
 {
     for(int i=0;i<headerGuiComponents.size();i++)
     {
-        headerGuiComponents[i]->update();
+        if(!getTrack()->isDragging) headerGuiComponents[i]->update();
     }
 }
 
@@ -274,7 +280,8 @@ void ofxTLUIHeader::viewWasResized(ofEventArgs& args)
 //}
 
 //--------------------------------------------------------------------------------
-void ofxTLUIHeader::setShouldDelete(bool del){
+void ofxTLUIHeader::setShouldDelete(bool del)
+{
 	shouldDelete = del;
 	if(shouldDelete){
 		ofRemoveListener(trackHeader->events().viewWasResized, this, &ofxTLUIHeader::viewWasResized);
@@ -327,7 +334,11 @@ void ofxTLUIHeader::onButtonEvent(ofxDatGuiButtonEvent e)
     if(e.target == guiTrackName)
     {
         string newTrackName = ofSystemTextBoxDialog("Track name ?");
-        if(newTrackName!="") guiTrackName->setLabel(newTrackName);
+        if(newTrackName!="")
+        {
+            guiTrackName->setLabel(newTrackName);
+            getTrack()->setDisplayName(newTrackName);
+        }
     }
     
     

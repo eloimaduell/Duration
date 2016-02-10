@@ -41,14 +41,19 @@ ofxTLUIHeaderCurves::ofxTLUIHeaderCurves()
 
     ofxTLUIHeader::ofxTLUIHeader();
     
-    guiOscIn = new ofxDatGuiToggle("OSC IN",false);
+    guiOscIn = new ofxDatGuiToggle("Osc In",false);
     guiMin = new ofxDatGuiTextInput("Min","0.000");
     guiMax = new ofxDatGuiTextInput("Max","1.000");
 
     guiOscIn->onButtonEvent(this, &ofxTLUIHeaderCurves::onButtonEvent);
     guiMin->onTextInputEvent(this,&ofxTLUIHeaderCurves::onTextInputEvent);
     guiMax->onTextInputEvent(this,&ofxTLUIHeaderCurves::onTextInputEvent);
-    
+
+    //colors
+    guiOscIn->setStripeColor(oscCol);
+    guiMin->setStripeColor(valueCol);
+    guiMax->setStripeColor(valueCol);
+
     headerGuiComponents.push_back(guiOscIn);
     headerGuiComponents.push_back(guiMin);
     headerGuiComponents.push_back(guiMax);
@@ -127,4 +132,48 @@ void ofxTLUIHeaderCurves::setMin(float _min)
 void ofxTLUIHeaderCurves::setMax(float _max)
 {
     guiMax->setText(ofToString(_max));
+}
+
+//--------------------------------------------------------------------------------
+void ofxTLUIHeaderCurves::reorderGuiComponents()
+{
+    ofxTLUIHeader::reorderGuiComponents();
+    
+    ofxDatGuiComponent* aux;
+    int whereIsOscIn=-1;
+    int whereIsMin=-1;
+    int whereIsMax=-1;
+    
+    // look where is ...
+    for(int i=0;i<headerGuiComponents.size();i++)
+    {
+        if(headerGuiComponents[i]->getLabel()=="Osc In")
+        {
+            whereIsOscIn = i;
+        }
+
+        else if(headerGuiComponents[i]->getLabel()=="Min")
+        {
+            whereIsMin = i;
+        }
+        else if(headerGuiComponents[i]->getLabel()=="Max")
+        {
+            whereIsMax = i;
+        }
+    }
+    
+    aux = headerGuiComponents[whereIsMax];
+
+    headerGuiComponents[whereIsMax] = headerGuiComponents[whereIsOscIn];
+    headerGuiComponents[whereIsOscIn] = headerGuiComponents[whereIsMin];
+    headerGuiComponents[whereIsMin] = aux;
+    
+//    headerGuiComponents[whereIsOscIn] = headerGuiComponents[headerGuiComponents.size()-1];
+//    headerGuiComponents[headerGuiComponents.size()-1] = aux;
+
+//    //headerGuiComponents[whereIsMax] = headerGuiComponents[whereIsOscIn];
+//    //headerGuiComponents[whereIsOscIn] = headerGuiComponents[whereIsMin];
+//    headerGuiComponents[whereIsMax] = headerGuiComponents[whereIsMin];
+//    headerGuiComponents[whereIsMin] = aux;
+    
 }

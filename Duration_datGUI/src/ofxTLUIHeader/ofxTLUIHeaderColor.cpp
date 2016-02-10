@@ -42,8 +42,9 @@ ofxTLUIHeaderColor::ofxTLUIHeaderColor()
     ofxTLUIHeader::ofxTLUIHeader();
     
     // specific gui for this class
-    guiSelectPalette = new ofxDatGuiButton("SELECT PALETTE");
+    guiSelectPalette = new ofxDatGuiButton("Select Palette");
     guiSelectPalette->onButtonEvent(this, &ofxTLUIHeaderColor::onButtonEvent);
+    guiSelectPalette->setBackgroundColor(ofColor(128,128,128));
     headerGuiComponents.push_back(guiSelectPalette);
 
     for(int i=0;i<headerGuiComponents.size();i++)
@@ -69,9 +70,9 @@ void ofxTLUIHeaderColor::onButtonEvent(ofxDatGuiButtonEvent e)
     // base class
     ofxTLUIHeader::onButtonEvent(e);
 
-    cout << "ofxTLUIHeaderColor :: button event from : " << e.target->getLabel() <<endl;
+    //cout << "ofxTLUIHeaderColor :: button event from : " << e.target->getLabel() <<endl;
     
-    if (e.target->getLabel() == "SELECT PALETTE")
+    if (e.target->getLabel() == "Select Palette")
     {
         ofFileDialogResult r = ofSystemLoadDialog();
         if(r.bSuccess){

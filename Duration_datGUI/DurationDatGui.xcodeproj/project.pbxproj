@@ -28,6 +28,7 @@
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
 		B00BBFB61C66A1FA003A49F5 /* ofxTLUIHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B00BBFB41C66A1FA003A49F5 /* ofxTLUIHeader.cpp */; settings = {ASSET_TAGS = (); }; };
 		B00BBFB91C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B00BBFB71C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp */; settings = {ASSET_TAGS = (); }; };
+		B03B4CF81C6B585C00F98AB4 /* ofxTLFileSelectFlags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B03B4CF61C6B585C00F98AB4 /* ofxTLFileSelectFlags.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D09D1C5F59180088217E /* ofxDatGuiComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D0631C5F59180088217E /* ofxDatGuiComponent.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D09E1C5F59180088217E /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D0681C5F59180088217E /* ofxDatGui.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2C31C5F5A5F0088217E /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = B042D2251C5F5A5F0088217E /* kiss_fft.c */; settings = {ASSET_TAGS = (); }; };
@@ -61,7 +62,6 @@
 		B042D2EB1C5F5A600088217E /* ofxTLTicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D29B1C5F5A5F0088217E /* ofxTLTicker.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2EC1C5F5A600088217E /* ofxTLTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D29D1C5F5A5F0088217E /* ofxTLTrack.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2ED1C5F5A600088217E /* ofxTLTrackHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D29F1C5F5A5F0088217E /* ofxTLTrackHeader.cpp */; settings = {ASSET_TAGS = (); }; };
-		B042D2EE1C5F5A600088217E /* ofxTLTrackHeaderDropDown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A11C5F5A5F0088217E /* ofxTLTrackHeaderDropDown.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2EF1C5F5A600088217E /* ofxTLVideoThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A31C5F5A5F0088217E /* ofxTLVideoThumb.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2F01C5F5A600088217E /* ofxTLVideoTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A51C5F5A5F0088217E /* ofxTLVideoTrack.cpp */; settings = {ASSET_TAGS = (); }; };
 		B042D2F11C5F5A600088217E /* ofxTLZoomer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B042D2A71C5F5A5F0088217E /* ofxTLZoomer.cpp */; settings = {ASSET_TAGS = (); }; };
@@ -223,6 +223,8 @@
 		B00BBFB51C66A1FA003A49F5 /* ofxTLUIHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeader.h; sourceTree = "<group>"; };
 		B00BBFB71C66A2A1003A49F5 /* ofxTLUIHeaderAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLUIHeaderAudio.cpp; sourceTree = "<group>"; };
 		B00BBFB81C66A2A1003A49F5 /* ofxTLUIHeaderAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLUIHeaderAudio.h; sourceTree = "<group>"; };
+		B03B4CF61C6B585C00F98AB4 /* ofxTLFileSelectFlags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLFileSelectFlags.cpp; sourceTree = "<group>"; };
+		B03B4CF71C6B585C00F98AB4 /* ofxTLFileSelectFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLFileSelectFlags.h; sourceTree = "<group>"; };
 		B042D04D1C5F59180088217E /* font-verdana.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-verdana.ttf"; sourceTree = "<group>"; };
 		B042D04E1C5F59180088217E /* icon-dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-dropdown.png"; sourceTree = "<group>"; };
 		B042D04F1C5F59180088217E /* icon-radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-radio-off.png"; sourceTree = "<group>"; };
@@ -318,8 +320,6 @@
 		B042D29E1C5F5A5F0088217E /* ofxTLTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrack.h; sourceTree = "<group>"; };
 		B042D29F1C5F5A5F0088217E /* ofxTLTrackHeader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrackHeader.cpp; sourceTree = "<group>"; };
 		B042D2A01C5F5A5F0088217E /* ofxTLTrackHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrackHeader.h; sourceTree = "<group>"; };
-		B042D2A11C5F5A5F0088217E /* ofxTLTrackHeaderDropDown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLTrackHeaderDropDown.cpp; sourceTree = "<group>"; };
-		B042D2A21C5F5A5F0088217E /* ofxTLTrackHeaderDropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLTrackHeaderDropDown.h; sourceTree = "<group>"; };
 		B042D2A31C5F5A5F0088217E /* ofxTLVideoThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoThumb.cpp; sourceTree = "<group>"; };
 		B042D2A41C5F5A5F0088217E /* ofxTLVideoThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTLVideoThumb.h; sourceTree = "<group>"; };
 		B042D2A51C5F5A5F0088217E /* ofxTLVideoTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTLVideoTrack.cpp; sourceTree = "<group>"; };
@@ -926,6 +926,8 @@
 		B042D26B1C5F5A5F0088217E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B03B4CF61C6B585C00F98AB4 /* ofxTLFileSelectFlags.cpp */,
+				B03B4CF71C6B585C00F98AB4 /* ofxTLFileSelectFlags.h */,
 				B042D2721C5F5A5F0088217E /* ofxTimeline.cpp */,
 				B042D2731C5F5A5F0088217E /* ofxTimeline.h */,
 				B042D26C1C5F5A5F0088217E /* ofxHotKeys.h */,
@@ -979,8 +981,6 @@
 				B042D29E1C5F5A5F0088217E /* ofxTLTrack.h */,
 				B042D29F1C5F5A5F0088217E /* ofxTLTrackHeader.cpp */,
 				B042D2A01C5F5A5F0088217E /* ofxTLTrackHeader.h */,
-				B042D2A11C5F5A5F0088217E /* ofxTLTrackHeaderDropDown.cpp */,
-				B042D2A21C5F5A5F0088217E /* ofxTLTrackHeaderDropDown.h */,
 				B042D2A31C5F5A5F0088217E /* ofxTLVideoThumb.cpp */,
 				B042D2A41C5F5A5F0088217E /* ofxTLVideoThumb.h */,
 				B042D2A51C5F5A5F0088217E /* ofxTLVideoTrack.cpp */,
@@ -1474,7 +1474,6 @@
 				B049D8CB1C45B828005F2021 /* ofxUISpacer.cpp in Sources */,
 				B0BEFB9B1C45BB5F009B3404 /* ofxOscSender.cpp in Sources */,
 				B042D2E81C5F5A600088217E /* ofxTLPage.cpp in Sources */,
-				B042D2EE1C5F5A600088217E /* ofxTLTrackHeaderDropDown.cpp in Sources */,
 				B042D2E61C5F5A600088217E /* ofxTLKeyframes.cpp in Sources */,
 				B049D8B41C45B828005F2021 /* ofxUIEventArgs.cpp in Sources */,
 				9119BFC53670A98106E367BB /* ofxMSATimer.cpp in Sources */,
@@ -1530,6 +1529,7 @@
 				B049D8AE1C45B828005F2021 /* ofxUIBiLabelSlider.cpp in Sources */,
 				FE278F5F783581237AE8ECB2 /* ofxEasingSine.cpp in Sources */,
 				B042D2DB1C5F5A5F0088217E /* ofxTLColors.cpp in Sources */,
+				B03B4CF81C6B585C00F98AB4 /* ofxTLFileSelectFlags.cpp in Sources */,
 				B0BEFB971C45BB5F009B3404 /* ofxOscBundle.cpp in Sources */,
 				32FC7731C1EF7B87E491C93D /* ofxTween.cpp in Sources */,
 				1AD5A76B1C10A4690028491D /* audiodecoderbase.cpp in Sources */,
