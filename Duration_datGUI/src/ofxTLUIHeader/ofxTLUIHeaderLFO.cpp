@@ -47,10 +47,9 @@ ofxTLUIHeaderLFO::ofxTLUIHeaderLFO()
     guiMin->onTextInputEvent(this,&ofxTLUIHeaderLFO::onTextInputEvent);
     guiMax->onTextInputEvent(this,&ofxTLUIHeaderLFO::onTextInputEvent);
     
-    //colors
     guiMin->setStripeColor(valueCol);
     guiMax->setStripeColor(valueCol);
-
+    
     headerGuiComponents.push_back(guiMin);
     headerGuiComponents.push_back(guiMax);
     

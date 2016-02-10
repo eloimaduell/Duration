@@ -96,9 +96,7 @@ class ofxTLUIHeader {
     void setOscOut(bool b) {guiOscOut->setEnabled(b);};
     
     void setShowGui(bool b);
-    
     void setTrackName(string s) {guiTrackName->setLabel(s);};
-    
     void setEnabledGui(bool b);
     bool getEnabledGui();
     
@@ -138,5 +136,7 @@ class ofxTLUIHeader {
     ofColor oscCol;
     ofColor valueCol;
     ofColor deleteCol;
+
+    
     
 };

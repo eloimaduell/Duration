@@ -45,9 +45,8 @@ ofxTLUIHeaderBangs::ofxTLUIHeaderBangs()
 
     guiOscIn->onButtonEvent(this, &ofxTLUIHeaderBangs::onButtonEvent);
     
-    //colors
     guiOscIn->setStripeColor(oscCol);
-
+    
     headerGuiComponents.push_back(guiOscIn);
     
     for(int i=0;i<headerGuiComponents.size();i++)

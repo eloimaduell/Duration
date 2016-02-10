@@ -50,7 +50,6 @@
 #include "ofxTLUIHeaderBangs.h"
 #include "ofxTLUIHeaderLFO.h"
 
-
 typedef struct {
     string path; //full project path
     string name;
@@ -100,6 +99,49 @@ class DurationController : public ofThread  {
 	void guiEvent(ofxUIEventArgs& e);
     void exit(ofEventArgs& e);
 
+	ofxTLTrack* addTrack(string trackType, string trackName = "", string xmlFileName = "");
+
+    //control elements
+    vector<string> trackTypes;
+    ofxUIDropDownList* addTrackDropDown;
+    ofxUIDropDownList* projectDropDown;
+	ofxUIMultiImageButton* saveButton;
+    
+//    ofxUILabel* timeLabel;
+//    ofxUITextInput* durationLabel;
+//    ofxUIMultiImageToggle* playpauseToggle;
+//	ofxUIMultiImageButton* stopButton;
+//    ofxUIMultiImageToggle* loopToggle;
+
+	//project settings elements
+//    ofxUILabelToggle* useBPMToggle;
+//	ofxUINumberDialer* bpmDialer;
+
+	//TODO: find a place for these
+//    ofxUILabelToggle* snapToKeysToggle;
+
+//    ofxUILabelToggle* enableOSCInToggle;
+//	ofxUILabelToggle* enableOSCOutToggle;
+//    ofxUITextInput* oscInPortInput;
+//    ofxUITextInput* oscOutIPInput;
+//    ofxUITextInput* oscOutPortInput;
+
+
+    string defaultProjectDirectoryPath;
+	DurationProjectSettings settings;
+
+	void newProject(string projectPath);
+    void newProject(string newProjectPath, string newProjectName);
+    void loadProject(string projectPath, bool forceCreate = false);
+    void loadProject(string projectPath, string projectName, bool forceCreate = false);
+    void saveProject();
+
+    DurationProjectSettings defaultProjectSettings();
+
+	void startRecording();
+	void stopRecording();
+    
+    
     // eloi DAT GUI
     /////////////////
     void setupMainGui();
@@ -108,7 +150,7 @@ class DurationController : public ofThread  {
     float mainGuiComponentWidth;
     virtual void onButtonEvent(ofxDatGuiButtonEvent e);
     virtual void onTextInputEvent(ofxDatGuiTextInputEvent e);
-
+    
     // gui A
     ofxDatGuiToggle* guiPlay;
     ofxDatGuiButton* guiStop;
@@ -126,47 +168,7 @@ class DurationController : public ofThread  {
     
     
     //--
-    
-	ofxTLTrack* addTrack(string trackType, string trackName = "", string xmlFileName = "");
 
-    //control elements
-    ofxUIDropDownList* projectDropDown;
-	ofxUIMultiImageButton* saveButton;
-//    ofxUILabel* timeLabel;
-//    ofxUITextInput* durationLabel;
-//    ofxUIMultiImageToggle* playpauseToggle;
-//	ofxUIMultiImageButton* stopButton;
-//    ofxUIMultiImageToggle* loopToggle;
-
-	//project settings elements
-//    ofxUILabelToggle* useBPMToggle;
-//	ofxUINumberDialer* bpmDialer;
-
-	//TODO: find a place for these
-//    ofxUILabelToggle* snapToKeysToggle;
-//
-//    ofxUILabelToggle* enableOSCInToggle;
-//	ofxUILabelToggle* enableOSCOutToggle;
-//    ofxUITextInput* oscInPortInput;
-//    ofxUITextInput* oscOutIPInput;
-//    ofxUITextInput* oscOutPortInput;
-
-    vector<string> trackTypes;
-    ofxUIDropDownList* addTrackDropDown;
-
-    string defaultProjectDirectoryPath;
-	DurationProjectSettings settings;
-
-	void newProject(string projectPath);
-    void newProject(string newProjectPath, string newProjectName);
-    void loadProject(string projectPath, bool forceCreate = false);
-    void loadProject(string projectPath, string projectName, bool forceCreate = false);
-    void saveProject();
-
-    DurationProjectSettings defaultProjectSettings();
-
-	void startRecording();
-	void stopRecording();
 
   protected:
 	ofxTimeline timeline;
@@ -194,14 +196,14 @@ class DurationController : public ofThread  {
 	unsigned long recordTimeOffset;
 	ofxMSATimer recordTimer;
 
-	void createTooltips();
-	void drawTooltips();
-	void drawTooltipDebug();
+//	void createTooltips();
+//	void drawTooltips();
+//	void drawTooltipDebug();
 
 	ofxLocalization translation;
 	ofMutex oscLock;
 
-	vector<Tooltip> tooltips;
+//	vector<Tooltip> tooltips;
 	//only can have one of these!
 	ofxTLAudioTrack* audioTrack;
 

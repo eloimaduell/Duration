@@ -50,11 +50,10 @@ class ofxTLUIHeaderCurves : public ofxTLUIHeader
     virtual void onButtonEvent(ofxDatGuiButtonEvent e);
     virtual void onTextInputEvent(ofxDatGuiTextInputEvent e);
 
+    virtual void reorderGuiComponents();
+
     ofxDatGuiToggle*    guiOscIn;
     ofxDatGuiTextInput* guiMin;
     ofxDatGuiTextInput* guiMax;
-    
-    virtual void reorderGuiComponents();
-
 
 };

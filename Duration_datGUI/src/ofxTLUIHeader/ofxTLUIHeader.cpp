@@ -44,7 +44,8 @@ bool isNumber(const string& s){
 }
 
 //--------------------------------------------------------------------------------
-ofxTLUIHeader::ofxTLUIHeader(){
+ofxTLUIHeader::ofxTLUIHeader()
+{
     trackHeader = NULL;
     shouldDelete = false;
 	lastInputReceivedTime = -1000;
@@ -66,8 +67,8 @@ ofxTLUIHeader::ofxTLUIHeader(){
     
     headerGuiComponentWidth = 120;
     guiTrackName = new ofxDatGuiButton("DEFAULT_NAME");
-    guiTrackName->setBackgroundColor(ofColor(200,200,200,255));
-    guiTrackName->setLabelColor(ofColor(0,0,0,255));
+    guiTrackName->setBackgroundColor(ofColor(220,220,220,255));
+    guiTrackName->setLabelColor(ofColor(0));
     guiPlaySolo = new ofxDatGuiButton("PLAY SOLO");
     guiDelay = new ofxDatGuiTextInput("DELAY MS.","0.000");
     guiOscOut = new ofxDatGuiToggle("OSC OUT",true);
@@ -85,24 +86,19 @@ ofxTLUIHeader::ofxTLUIHeader(){
     guiOscAddressButton->onButtonEvent(this,&ofxTLUIHeader::onButtonEvent);
 
     // STRIPE colors
-    trackCol = ofColor(255,125,0);
+    trackCol = ofColor(128,128,128);
     guiTrackName->setStripeWidth(5);
     guiTrackName->setStripeColor(trackCol);
     guiPlaySolo->setStripeColor(trackCol);
     guiDelay->setStripeColor(trackCol);
     
-//    oscCol = ofColor(0,120,255);
     oscCol = ofColor(128,128,128);
     guiOscOut->setStripeColor(oscCol);
     guiOscAddressButton->setStripeColor(oscCol);
     guiOscAddressLabel->setStripeColor(oscCol);
     
-//    deleteCol = ofColor(255,0,0);
     deleteCol = ofColor(128,128,128);
     guiDeleteTrack->setStripeColor(deleteCol);
-
-    //valueCol = ofColor(0,255,120);
-    valueCol = ofColor(128,128,128);
     
     // array of gui components
     headerGuiComponents.push_back(guiTrackName);
@@ -151,7 +147,7 @@ void ofxTLUIHeader::update()
 {
     for(int i=0;i<headerGuiComponents.size();i++)
     {
-        if(!getTrack()->isDragging) headerGuiComponents[i]->update();
+        headerGuiComponents[i]->update();
     }
 }
 
@@ -280,8 +276,7 @@ void ofxTLUIHeader::viewWasResized(ofEventArgs& args)
 //}
 
 //--------------------------------------------------------------------------------
-void ofxTLUIHeader::setShouldDelete(bool del)
-{
+void ofxTLUIHeader::setShouldDelete(bool del){
 	shouldDelete = del;
 	if(shouldDelete){
 		ofRemoveListener(trackHeader->events().viewWasResized, this, &ofxTLUIHeader::viewWasResized);
@@ -334,11 +329,7 @@ void ofxTLUIHeader::onButtonEvent(ofxDatGuiButtonEvent e)
     if(e.target == guiTrackName)
     {
         string newTrackName = ofSystemTextBoxDialog("Track name ?");
-        if(newTrackName!="")
-        {
-            guiTrackName->setLabel(newTrackName);
-            getTrack()->setDisplayName(newTrackName);
-        }
+        if(newTrackName!="") guiTrackName->setLabel(newTrackName);
     }
     
     
