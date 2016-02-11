@@ -329,10 +329,12 @@ void ofxTLUIHeader::onButtonEvent(ofxDatGuiButtonEvent e)
     if(e.target == guiTrackName)
     {
         string newTrackName = ofSystemTextBoxDialog("Track name ?");
-        if(newTrackName!="") guiTrackName->setLabel(newTrackName);
+        if(newTrackName!="")
+        {
+            guiTrackName->setLabel(newTrackName);
+            getTrack()->setDisplayName(newTrackName);
+        }
     }
-    
-    
     
     if (e.target->getLabel() == "OSC OUT")
     {

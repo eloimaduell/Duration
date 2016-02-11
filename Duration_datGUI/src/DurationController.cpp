@@ -175,8 +175,8 @@ void DurationController::setup(){
     trackTypes.push_back(translation.translateKey("colors"));
 	trackTypes.push_back(translation.translateKey("lfo"));
 	trackTypes.push_back(translation.translateKey("audio"));
-    trackTypes.push_back(translation.translateKey("dropdown flags"));
-    trackTypes.push_back(translation.translateKey("fileselect flags"));
+    trackTypes.push_back(translation.translateKey("dropdownflags"));
+    trackTypes.push_back(translation.translateKey("fileselectflags"));
 
     
     addTrackDropDown = new ofxUIDropDownList(DROP_DOWN_WIDTH, translation.translateKey("ADD TRACK"), trackTypes, OFX_UI_FONT_MEDIUM);
@@ -946,6 +946,10 @@ void DurationController::bangFired(ofxTLBangEventArgs& bang){
     {
         m.addStringArg(bang.flag);
     }
+    else if(trackType == "FileSelectFlags")
+    {
+        m.addStringArg(bang.flag);
+    }
 
 	bangsReceived.push_back(m);
 }
@@ -1164,9 +1168,6 @@ ofxTLTrack* DurationController::addTrack(string trackType, string trackName, str
 	else if(trackType == translation.translateKey("flags") || trackType == "flags"){
 		newTrack = timeline.addFlags(trackName, xmlFileName);
 	}
-    else if(trackType == translation.translateKey("dropdown flags") || trackType == "dropdown flags"){
-        newTrack = timeline.addDropDownFlags(trackName, xmlFileName);
-    }
 	else if(trackType == translation.translateKey("curves") || trackType == "curves"){
 		newTrack = timeline.addCurves(trackName, xmlFileName);
 	}
@@ -1179,7 +1180,7 @@ ofxTLTrack* DurationController::addTrack(string trackType, string trackName, str
 	else if(trackType == translation.translateKey("lfo") || trackType == "lfo"){
 		newTrack = timeline.addLFO(trackName, xmlFileName);
 	}
-    else if(trackType == translation.translateKey("dropdownflags") || trackType == "DropDownFlags"){
+    else if((trackType == translation.translateKey("dropdownflags")) ||( trackType == "dropdownflags")){
         newTrack = timeline.addDropDownFlags(trackName, xmlFileName);
     }
     else if(trackType == translation.translateKey("fileselectflags") || trackType == "fileselectflags"){
@@ -1368,6 +1369,18 @@ ofPtr<ofxTLUIHeader> DurationController::getHeaderWithDisplayName(string name){
 
 //--------------------------------------------------------------
 void DurationController::draw(ofEventArgs& args){
+
+    
+    // datGui update ...
+    for(int i=0;i<mainGuiRowA.size();i++)
+    {
+        mainGuiRowA[i]->draw();
+    }
+    for(int i=0;i<mainGuiRowB.size();i++)
+    {
+        mainGuiRowB[i]->draw();
+    }
+    //--
 
     timeline.draw();
 
@@ -1584,6 +1597,9 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     headers.clear(); //smart pointers will call destructor
     timeline.reset();
     timeline.setup();
+    
+    setupMainGui();
+
 
 	if(audioTrack != NULL){
 		delete audioTrack;
@@ -1651,6 +1667,7 @@ void DurationController::loadProject(string projectPath, string projectName, boo
 				string displayName = projectSettings.getValue("displayName","");
 				if(displayName != ""){
 					newTrack->setDisplayName(displayName);
+                    headerTrack->setTrackName(displayName);
 				}
 //                headerTrack->setSendOSC(projectSettings.getValue("sendOSC", true));
 				headerTrack->setOscOut(projectSettings.getValue("sendOSC", false));
@@ -1696,6 +1713,8 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     //LOAD OTHER SETTINGS
     projectSettings.pushTag("timelineSettings");
     timeline.setDurationInTimecode(projectSettings.getValue("duration", "00:00:00:000"));
+    guiDuration->setText(timeline.getDurationInTimecode());
+    
     timeline.setCurrentTimecode(projectSettings.getValue("playhead", "00:00:00:000"));
     timeline.setInPointAtTimecode(projectSettings.getValue("inpoint", "00:00:00:000"));
     timeline.setOutPointAtTimecode(projectSettings.getValue("outpoint", "00:00:00:000"));
@@ -1704,6 +1723,7 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     timeline.setLoopType(loops ? OF_LOOP_NORMAL : OF_LOOP_NONE);
 
     guiTime->setLabel(timeline.getDurationInTimecode());
+    
     //    durationLabel->setTextString(timeline.getDurationInTimecode());
     
     
@@ -2275,6 +2295,7 @@ void DurationController::onTextInputEvent(ofxDatGuiTextInputEvent e)
     {
         string newDuration = t->getText();
         timeline.setDurationInTimecode(newDuration);
+
         //durationLabel->setTextString(timeline.getDurationInTimecode());
         needsSave = true;
     }
@@ -2303,6 +2324,7 @@ void DurationController::onTextInputEvent(ofxDatGuiTextInputEvent e)
     {
         if(settings.bpm != ofToFloat(t->getText()))
         {
+            //cout << "bpm_" << ofToFloat(t->getText()) << endl;
             timeline.setBPM(settings.bpm = ofToFloat(t->getText()));
             needsSave = true;
         }
