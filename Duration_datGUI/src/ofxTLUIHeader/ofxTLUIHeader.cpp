@@ -145,9 +145,17 @@ void ofxTLUIHeader::draw()
 //--------------------------------------------------------------------------------
 void ofxTLUIHeader::update()
 {
+//    if(guiIsEnabled)
+//    {
+//        cout << "ofxTLUIHeader_uptate: " << getTrack()->getDisplayName() << " GUIheader is ENABLED " << endl;
+//    }
+//    else cout << "ofxTLUIHeader_uptate: " << getTrack()->getDisplayName() << " GUIheader is DISABLED " << endl;
+
+
+    
     for(int i=0;i<headerGuiComponents.size();i++)
     {
-        headerGuiComponents[i]->update();
+        headerGuiComponents[i]->update(guiIsEnabled);
     }
 }
 
@@ -382,6 +390,7 @@ void ofxTLUIHeader::setShowGui(bool b)
 //--------------------------------------------------------------------------------
 void ofxTLUIHeader::setEnabledGui(bool b)
 {
+//    cout << "ofxTLUIHeader:setting Enabled GUI TO : " << b <<endl;
     for(int i=0;i<headerGuiComponents.size();i++)
     {
         headerGuiComponents[i]->setEnabled(b);
@@ -422,3 +431,4 @@ void ofxTLUIHeader::reorderGuiComponents()
 void ofxTLUIHeader:: onTextInputEvent(ofxDatGuiTextInputEvent e)
 {
 }
+

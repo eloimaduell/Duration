@@ -58,12 +58,13 @@ void DurationController::enableInterface(){
 		ofAddListener(ofEvents().update, this, &DurationController::update);
 		ofAddListener(ofEvents().draw, this, &DurationController::draw);
 		ofAddListener(ofEvents().keyPressed, this, &DurationController::keyPressed);
-		gui->enable();
-		gui->disableAppEventCallbacks();
+//		gui->enable();
+//		gui->disableAppEventCallbacks();
 		timeline.enable();
 		map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
 		while(it != headers.end())
         {
+            it->second->setEnabledGui(true);
             it->second->setShowGui(true);
             it++;
 		}
@@ -76,11 +77,12 @@ void DurationController::disableInterface(){
 		ofRemoveListener(ofEvents().update, this, &DurationController::update);
 		ofRemoveListener(ofEvents().draw, this, &DurationController::draw);
 		ofRemoveListener(ofEvents().keyPressed, this, &DurationController::keyPressed);
-		gui->disable();
+//		gui->disable();
 		timeline.disable();
 		map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
 		while(it != headers.end())
         {
+            it->second->setEnabledGui(false);
             it->second->setShowGui(false);
             it++;
 		}
@@ -91,7 +93,8 @@ bool DurationController::isInterfaceEnabled(){
 	return enabled;
 }
 
-void DurationController::setup(){
+void DurationController::setup()
+{
 
 	#ifdef TARGET_WIN32
 	FreeConsole();
@@ -114,6 +117,13 @@ void DurationController::setup(){
     projects.push_back(translation.translateKey("new project..."));
     projects.push_back(translation.translateKey("open project..."));
 
+    projectDropDownStrings.push_back("New Project");
+    projectDropDownStrings.push_back("Open Project");
+    projectDropDownStrings.push_back("Save Project");
+    projectDropDownStrings.push_back("");
+
+    
+    
 #ifdef TARGET_WIN32
     defaultProjectDirectoryPath = ofToDataPath(ofFilePath::getUserHomeDir() + "\\Documents\\Duration\\");
 #else
@@ -135,6 +145,7 @@ void DurationController::setup(){
             subDir.listDir();
             if(subDir.size() > 0){
                 projects.push_back(projectDirectory.getName(i));
+                projectDropDownStrings.push_back(projectDirectory.getName(i));
             }
         }
     }
@@ -153,43 +164,43 @@ void DurationController::setup(){
     timeline.setSpacebarTogglePlay(false);
     timeline.setFrameRate(30);
 	timeline.setDurationInSeconds(30);
-	timeline.setOffset(ofVec2f(0, 90));
+	timeline.setOffset(ofVec2f(0, 45));
     timeline.setBPM(120.f);
 	timeline.setAutosave(false);
 	timeline.setEditableHeaders(true);
 	timeline.moveToThread(); //increases accuracy of bang call backs
 
-	//Set up top GUI
-    gui = new ofxUICanvas(0,43,ofGetWidth(), 90);
-
-    //ADD PROJECT DROP DOWN
-    projectDropDown = new ofxUIDropDownList(DROP_DOWN_WIDTH, "PROJECT", projects, OFX_UI_FONT_LARGE);
-    projectDropDown->setAutoClose(true);
-    gui->addWidgetDown(projectDropDown);
-    //ADD TRACKS
-    vector<string> trackTypes;
-    trackTypes.push_back(translation.translateKey("bangs"));
-    trackTypes.push_back(translation.translateKey("flags"));
-    trackTypes.push_back(translation.translateKey("switches"));
-    trackTypes.push_back(translation.translateKey("curves"));
-    trackTypes.push_back(translation.translateKey("colors"));
-	trackTypes.push_back(translation.translateKey("lfo"));
-	trackTypes.push_back(translation.translateKey("audio"));
-    trackTypes.push_back(translation.translateKey("dropdownflags"));
-    trackTypes.push_back(translation.translateKey("fileselectflags"));
-
-    
-    addTrackDropDown = new ofxUIDropDownList(DROP_DOWN_WIDTH, translation.translateKey("ADD TRACK"), trackTypes, OFX_UI_FONT_MEDIUM);
-    addTrackDropDown->setAllowMultiple(false);
-    addTrackDropDown->setAutoClose(true);
-	//    gui->addWidgetRight(addTrackDropDown);
-	gui->addWidgetSouthOf(addTrackDropDown, "PROJECT");
-
-    saveButton = new ofxUIMultiImageButton(32, 32, false, "GUI/save_.png", "SAVE");
-    saveButton->setLabelVisible(false);
-    gui->addWidgetEastOf(saveButton, "PROJECT");
-
-
+//	//Set up top GUI
+//    gui = new ofxUICanvas(0,43,ofGetWidth(), 90);
+//
+//    //ADD PROJECT DROP DOWN
+//    projectDropDown = new ofxUIDropDownList(DROP_DOWN_WIDTH, "PROJECT", projects, OFX_UI_FONT_LARGE);
+//    projectDropDown->setAutoClose(true);
+//    gui->addWidgetDown(projectDropDown);
+//    //ADD TRACKS
+//    vector<string> trackTypes;
+//    trackTypes.push_back(translation.translateKey("bangs"));
+//    trackTypes.push_back(translation.translateKey("flags"));
+//    trackTypes.push_back(translation.translateKey("switches"));
+//    trackTypes.push_back(translation.translateKey("curves"));
+//    trackTypes.push_back(translation.translateKey("colors"));
+//	trackTypes.push_back(translation.translateKey("lfo"));
+//	trackTypes.push_back(translation.translateKey("audio"));
+//    trackTypes.push_back(translation.translateKey("dropdownflags"));
+//    trackTypes.push_back(translation.translateKey("fileselectflags"));
+//
+//    
+//    addTrackDropDown = new ofxUIDropDownList(DROP_DOWN_WIDTH, translation.translateKey("ADD TRACK"), trackTypes, OFX_UI_FONT_MEDIUM);
+//    addTrackDropDown->setAllowMultiple(false);
+//    addTrackDropDown->setAutoClose(true);
+//	//    gui->addWidgetRight(addTrackDropDown);
+//	gui->addWidgetSouthOf(addTrackDropDown, "PROJECT");
+//
+//    saveButton = new ofxUIMultiImageButton(32, 32, false, "GUI/save_.png", "SAVE");
+//    saveButton->setLabelVisible(false);
+//    gui->addWidgetEastOf(saveButton, "PROJECT");
+//
+//
     //ADD TIMECODE
 //    string zeroTimecode = "00:00:00:000";
 //    timeLabel = new ofxUILabel(zeroTimecode, OFX_UI_FONT_LARGE);
@@ -240,14 +251,15 @@ void DurationController::setup(){
 //    gui->addWidgetRight(oscOutIPInput);
 //    gui->addWidgetRight(oscOutPortInput);
 //
-	ofAddListener(gui->newGUIEvent, this, &DurationController::guiEvent);
+//	ofAddListener(gui->newGUIEvent, this, &DurationController::guiEvent);
 
 	//add events
     ofAddListener(timeline.events().bangFired, this, &DurationController::bangFired);
 	ofAddListener(ofEvents().exit, this, &DurationController::exit);
 
-    //SET UP LISENTERS
-	enableInterface();
+    //SET UP GUI AND LISENTERS
+    setupMainGui();
+    enableInterface();
 
     if(settingsLoaded){
         string lastProjectPath = defaultSettings.getValue("lastProjectPath", "");
@@ -267,6 +279,8 @@ void DurationController::setup(){
 
 	//createTooltips();
 
+
+    
 	startThread();
 }
 
@@ -887,6 +901,9 @@ void DurationController::handleOscOut(){
 	//any bangs that came our way this frame send them out too
 	for(int i = 0; i < bangsReceived.size(); i++){
 //		cout << "FOUND BANGS!" << endl;
+        ofxOscMessage* m = new ofxOscMessage();
+        m = &bangsReceived[i];
+        cout <<"Duration Ctrl :: processing bangs : " << m->getAddress() << endl;
 		bundle.addMessage(bangsReceived[i]);
 	}
 	numMessages += bangsReceived.size();
@@ -955,11 +972,11 @@ void DurationController::bangFired(ofxTLBangEventArgs& bang){
 }
 
 //--------------------------------------------------------------
-void DurationController::guiEvent(ofxUIEventArgs &e)
-{
-    string name = e.widget->getName();
-	int kind = e.widget->getKind();
-
+//void DurationController::guiEvent(ofxUIEventArgs &e)
+//{
+//    string name = e.widget->getName();
+//	int kind = e.widget->getKind();
+//
 //	//	cout << "name is " << name << " kind is " << kind << endl;
 //
 //	if(e.widget == stopButton && stopButton->getValue()){
@@ -986,51 +1003,51 @@ void DurationController::guiEvent(ofxUIEventArgs &e)
 //			needsSave = true;
 //		}
 //    }
-    if(e.widget == addTrackDropDown){
-        if(addTrackDropDown->isOpen()){
-            timeline.disable();
-        }
-        else {
-            timeline.enable();
-            if(addTrackDropDown->getSelected().size() > 0){
-				lock();
-                string selectedTrackType = addTrackDropDown->getSelected()[0]->getName();
-				addTrack(translation.keyForTranslation(selectedTrackType));
-				unlock();
-
-                addTrackDropDown->clearSelected();
-            }
-        }
-    }
-    else if(e.widget == projectDropDown){
-        if(projectDropDown->isOpen()){
-            timeline.disable();
-			addTrackDropDown->setVisible(false);
-        }
-		else {
-			addTrackDropDown->setVisible(true);
-			addTrackDropDown->close();
-            timeline.enable();
-            if(projectDropDown->getSelected().size() > 0){
-                string selectedProjectName = projectDropDown->getSelected()[0]->getName();
-                if(selectedProjectName == translation.translateKey("new project...")){
-                    shouldCreateNewProject = true;
-                }
-                else if(selectedProjectName == translation.translateKey("open project...")){
-                    shouldLoadProject = true;
-					projectToLoad = "";
-                }
-                else {
-					shouldLoadProject = true;
-					projectToLoad = ofToDataPath(defaultProjectDirectoryPath+selectedProjectName);
-                }
-                projectDropDown->clearSelected();
-            }
-        }
-    }
-    else if(e.widget == saveButton && saveButton->getValue()){
-        saveProject();
-    }
+//    if(e.widget == addTrackDropDown){
+//        if(addTrackDropDown->isOpen()){
+//            timeline.disable();
+//        }
+//        else {
+//            timeline.enable();
+//            if(addTrackDropDown->getSelected().size() > 0){
+//				lock();
+//                string selectedTrackType = addTrackDropDown->getSelected()[0]->getName();
+//				addTrack(translation.keyForTranslation(selectedTrackType));
+//				unlock();
+//
+//                addTrackDropDown->clearSelected();
+//            }
+//        }
+//    }
+//    else if(e.widget == projectDropDown){
+//        if(projectDropDown->isOpen()){
+//            timeline.disable();
+//			addTrackDropDown->setVisible(false);
+//        }
+//		else {
+//			addTrackDropDown->setVisible(true);
+//			addTrackDropDown->close();
+//            timeline.enable();
+//            if(projectDropDown->getSelected().size() > 0){
+//                string selectedProjectName = projectDropDown->getSelected()[0]->getName();
+//                if(selectedProjectName == translation.translateKey("new project...")){
+//                    shouldCreateNewProject = true;
+//                }
+//                else if(selectedProjectName == translation.translateKey("open project...")){
+//                    shouldLoadProject = true;
+//					projectToLoad = "";
+//                }
+//                else {
+//					shouldLoadProject = true;
+//					projectToLoad = ofToDataPath(defaultProjectDirectoryPath+selectedProjectName);
+//                }
+//                projectDropDown->clearSelected();
+//            }
+//        }
+//    }
+//    else if(e.widget == saveButton && saveButton->getValue()){
+//        saveProject();
+//    }
 //    //LOOP
 //    else if(e.widget == loopToggle){
 //        timeline.setLoopType(loopToggle->getValue() ? OF_LOOP_NORMAL : OF_LOOP_NONE);
@@ -1146,7 +1163,7 @@ void DurationController::guiEvent(ofxUIEventArgs &e)
 //            oscOutPortInput->setTextString( ofToString(settings.oscOutPort) );
 //        }
 //    }
-}
+//}
 
 //--------------------------------------------------------------
 ofxTLTrack* DurationController::addTrack(string trackType, string trackName, string xmlFileName){
@@ -1212,9 +1229,12 @@ ofxTLTrack* DurationController::addTrack(string trackType, string trackName, str
 void DurationController::update(ofEventArgs& args)
 {
 
-    gui->update();
+//    gui->update();
 
-    // datGui update ...
+    //------------------
+    // datGui update
+    //------------------
+
     for(int i=0;i<mainGuiRowA.size();i++)
     {
         mainGuiRowA[i]->update();
@@ -1223,10 +1243,86 @@ void DurationController::update(ofEventArgs& args)
     {
         mainGuiRowB[i]->update();
     }
-    //--
+
+    //------------------
+    // manage dropdowns
+    //------------------
+    
+    // if it's expanded ... disable headers guis !
+    if( (guiAddTrack->getIsExpanded()) || (guiProject->getIsExpanded()) )
+    {
+        // disable events on all ofxTLUIHeaders
+        timeline.disableEvents();
+        map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
+        while(it != headers.end())
+        {
+            it->second->setEnabledGui(false);
+            it++;
+        }
+    }
+    else
+    {
+        // enable events on all ofxTLUIHeaders
+        timeline.enableEvents();
+        map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
+        while(it != headers.end())
+        {
+            it->second->setEnabledGui(true);
+            it->second->update();
+            it++;
+
+        }
+    }
+    //------------------------------
+    // manage dropdown ... addTrack
+    //------------------------------
+    
+    if(  ( guiAddTrack->getLabel() !="Add Track") )
+    {
+        lock();
+        string selectedTrackType = guiAddTrack->getLabel();
+        addTrack(translation.keyForTranslation(selectedTrackType));
+        unlock();
+        guiAddTrack->setLabel("Add Track");
+    }
+    
+    
+    //------------------------------
+    // manage dropdown ... guiProject
+    //------------------------------
+    
+    if(guiProject->getLabel() != "Project" )
+    {
+        string selectedProjectOption = guiProject->getLabel();
+        if(selectedProjectOption=="New Project")
+        {
+            shouldCreateNewProject = true;
+        }
+        else if(selectedProjectOption=="Open Project")
+        {
+            shouldLoadProject = true;
+            projectToLoad = "";
+        }
+        else if(selectedProjectOption=="Save Project")
+        {
+            saveProject();
+        }
+        else
+        {
+            shouldLoadProject = true;
+            projectToLoad = ofToDataPath(defaultProjectDirectoryPath+guiProject->getLabel());
+            cout << "DurationCtrl :: update :: got projectToLoad " << projectToLoad << endl;
+            
+        }
+        guiProject->setLabel("Project");
+    }
     
 
-	if(shouldStartPlayback)
+
+    //------------------
+    
+    
+    if(shouldStartPlayback)
     {
 		shouldStartPlayback = false;
 		startPlayback();
@@ -1252,35 +1348,40 @@ void DurationController::update(ofEventArgs& args)
 //			durationLabel->setTextString(timeline.getDurationInTimecode());
 //		}
         //cout << "update : " << timeline.getDurationInTimecode() << " vs " << guiDuration->getText() << endl;
-        if(guiDuration->getText() != timeline.getDurationInTimecode())
+    }
+    
+    if(guiDuration->getText() != timeline.getDurationInTimecode())
+    {
+        guiDuration->setText(timeline.getDurationInTimecode());
+    }
+    
+    if(ofGetHeight() < timeline.getDrawRect().getMaxY())
+    {
+        ofSetWindowShape(ofGetWidth(), timeline.getDrawRect().getMaxY()+30);
+    }
+    
+    if(shouldLoadProject)
+    {
+        shouldLoadProject = false;
+        cout << "DurationCtrl :: update :: Shoul load project : projectToLoad " << projectToLoad << endl;
+        if(projectToLoad != "")
         {
-            guiDuration->setText(timeline.getDurationInTimecode());
-
+            loadProject(projectToLoad);
+            projectToLoad = "";
         }
-
-        if(ofGetHeight() < timeline.getDrawRect().getMaxY())
+        else
         {
-            ofSetWindowShape(ofGetWidth(), timeline.getDrawRect().getMaxY()+30);
-        }
-        
-        if(shouldLoadProject)
-        {
-            shouldLoadProject = false;
-            if(projectToLoad != "")
+            ofFileDialogResult r = ofSystemLoadDialog("Load Project. Choose a folder project to load", true);
+            if(r.bSuccess)
             {
-                loadProject(projectToLoad);
-                projectToLoad = "";
-            }
-            else
-            {
-                ofFileDialogResult r = ofSystemLoadDialog("Load Project", true);
-                if(r.bSuccess)
-                {
-                    loadProject(r.getPath(), r.getName());
-                }
+                loadProject(r.getPath(), r.getName());
             }
         }
     }
+
+    
+    //cout << "shouldCreateNew : " << shouldCreateNewProject << " :: newProjectPath : " << newProjectPath << endl;
+    
     if(shouldCreateNewProject){
         shouldCreateNewProject = false;
 		if(newProjectPath != ""){
@@ -1315,16 +1416,17 @@ void DurationController::update(ofEventArgs& args)
 
 		needsSave |= it->second->getModified();
 
-        void setEnabledGui(bool b);
-        bool getEnabledGui();
+//        void setEnabledGui(bool b);
+//        bool getEnabledGui();
 
-		if(timeline.isModal() && it->second->getEnabledGui())
-        {
-            it->second->setEnabledGui(false);
-        }
-		else if(!timeline.isModal() && !it->second->getEnabledGui()){
-            it->second->setEnabledGui(true);
-		}
+// I've taken this out as it was conflicting with the seEnbledGui() made in AddTrack and Project UI management ...
+//		if(timeline.isModal() && it->second->getEnabledGui())
+//        {
+//            it->second->setEnabledGui(false);
+//        }
+//		else if(!timeline.isModal() && !it->second->getEnabledGui()){
+//            it->second->setEnabledGui(true);
+//		}
 
 		if(it->second->getShouldDelete()){
 			lock();
@@ -1347,11 +1449,6 @@ void DurationController::update(ofEventArgs& args)
         it++;
     }
     
-    // update ofxTLUIHeaders
-    map<string, ofPtr<ofxTLUIHeader> >::iterator trackit;
-    for(trackit = headers.begin(); trackit != headers.end(); trackit++){
-        trackit->second->update();
-    }
 
 }
 
@@ -1370,20 +1467,11 @@ ofPtr<ofxTLUIHeader> DurationController::getHeaderWithDisplayName(string name){
 //--------------------------------------------------------------
 void DurationController::draw(ofEventArgs& args){
 
-    
-    // datGui update ...
-    for(int i=0;i<mainGuiRowA.size();i++)
-    {
-        mainGuiRowA[i]->draw();
-    }
-    for(int i=0;i<mainGuiRowB.size();i++)
-    {
-        mainGuiRowB[i]->draw();
-    }
-    //--
-
     timeline.draw();
 
+
+
+    
 	//go through and draw all the overlay backgrounds to indicate 'hot' track sfor recording
 	ofPushStyle();
 	map<string, ofPtr<ofxTLUIHeader> >::iterator trackit;
@@ -1400,17 +1488,27 @@ void DurationController::draw(ofEventArgs& args){
 	}
 	ofPopStyle();
 
-	gui->draw();
+//	gui->draw();
 
 	if(needsSave || timeline.hasUnsavedChanges())
     {
-		ofPushStyle();
-		ofSetColor(200,20,0, 40);
-		ofFill();
-		ofxUIRectangle r = *saveButton->getRect();
-		ofRect(r.x,r.y,r.width,r.height);
-		ofPopStyle();
-	}
+        guiProject->setBackgroundColor(ofColor(250,100,100));
+    }
+    else
+    {
+        guiProject->setBackgroundColor(ofColor(230));
+    }
+    
+    // datGui Draw ...
+    for(int i=0;i<mainGuiRowA.size();i++)
+    {
+        mainGuiRowA[i]->draw();
+    }
+    for(int i=0;i<mainGuiRowB.size();i++)
+    {
+        mainGuiRowB[i]->draw();
+    }
+    //--
 	//drawTooltips();
 	//drawTooltipDebug();
 }
@@ -1421,9 +1519,9 @@ void DurationController::keyPressed(ofKeyEventArgs& keyArgs){
         return;
     }
 
-	if(gui->hasKeyboardFocus()){
-		return;
-	}
+//	if(gui->hasKeyboardFocus()){
+//		return;
+//	}
 
     int key = keyArgs.key;
 	if(key == ' '){
@@ -1559,10 +1657,15 @@ void DurationController::newProject(string newProjectPath, string newProjectName
 
     //saves file with default settings to new directory
     saveProject();
+    
+    //create audio folder
+    cout << "DurationCtrlr::new Project : DIR : " << newProjectDirectory.getOriginalDirectory() << endl;
+    newProjectDirectory.createDirectory(newProjectDirectory.getOriginalDirectory() + "audio");
+    
 
     loadProject(settings.path, settings.name);
 
-    projectDropDown->addToggle(newProjectName);
+//    projectDropDown->addToggle(newProjectName);
 }
 
 //--------------------------------------------------------------
@@ -1598,8 +1701,8 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     timeline.reset();
     timeline.setup();
     
-    setupMainGui();
 
+    guiProjectName->setLabel(projectName);
 
 	if(audioTrack != NULL){
 		delete audioTrack;
@@ -1655,7 +1758,9 @@ void DurationController::loadProject(string projectPath, string projectName, boo
 				else if(newTrack->getTrackType() == "Audio")
                 {
 					string clipPath = projectSettings.getValue("clip", "");
+                    cout << "Duration Ctrl:: loadProject :: AUDIO clip path = " << clipPath << endl;
 					if(clipPath != ""){
+                        
 						audioTrack->loadSoundfile(clipPath);
 					}
 //					int numbins = projectSettings.getValue("bins", 256);
@@ -1771,7 +1876,7 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     newSettings.settingsPath = ofToDataPath(newSettings.path + "/.durationproj");
     settings = newSettings;
 
-    projectDropDown->setLabelText(projectName);
+//    projectDropDown->setLabelText(projectName);
     timeline.setShowBPMGrid(newSettings.useBPM);
     timeline.enableSnapToBPM(newSettings.useBPM);
 	timeline.setBPM(newSettings.bpm);
@@ -2112,6 +2217,8 @@ void DurationController::setupMainGui()
     // mainGUIA
     //////////////
     
+    guiProjectName = new ofxDatGuiLabel("ProjectName");
+    
     guiPlay = new ofxDatGuiToggle("PLAY",false);
     guiStop = new ofxDatGuiButton("STOP");
     guiLoop = new ofxDatGuiToggle("LOOP",true);
@@ -2132,6 +2239,7 @@ void DurationController::setupMainGui()
     guiOscInPort->onTextInputEvent(this,&DurationController::onTextInputEvent);
     
     
+    mainGuiRowA.push_back(guiProjectName);
     mainGuiRowA.push_back(guiPlay);
     mainGuiRowA.push_back(guiStop);
     mainGuiRowA.push_back(guiLoop);
@@ -2145,11 +2253,11 @@ void DurationController::setupMainGui()
     {
         // colors
         mainGuiRowA[i]->setStripeColor(ofColor(0));
-        mainGuiRowA[i]->setBackgroundColor(ofColor(220));
+        mainGuiRowA[i]->setBackgroundColor(ofColor(230));
         mainGuiRowA[i]->setLabelColor(ofColor(0));
         
         isLong=false;
-        if(mainGuiRowA[i]->getLabel()=="OUT IP")
+        if((mainGuiRowA[i]->getLabel()=="OUT IP")|| (mainGuiRowA[i]->getLabel()=="IN PORT"))
         {
             isLong=true;
         }
@@ -2171,20 +2279,38 @@ void DurationController::setupMainGui()
         
     }
     
+    guiProjectName->setLabelColor(ofColor(255));
+    guiProjectName->setBackgroundColor(ofColor(0));
+    
     //////////////
     // mainGUI B
     //////////////
     
     guiTime = new ofxDatGuiLabel("00:00:00:00");
-    
     guiDuration = new ofxDatGuiTextInput("DURATION","00:00:00:00");
     guiBpmNum = new ofxDatGuiTextInput("BPM","12345");
-    
     guiBpm = new ofxDatGuiToggle("BPM SNAP",false);
+    vector<string> trackTypes;
+    trackTypes.push_back(translation.translateKey("bangs"));
+    trackTypes.push_back(translation.translateKey("flags"));
+    trackTypes.push_back(translation.translateKey("switches"));
+    trackTypes.push_back(translation.translateKey("curves"));
+    trackTypes.push_back(translation.translateKey("colors"));
+    trackTypes.push_back(translation.translateKey("lfo"));
+    trackTypes.push_back(translation.translateKey("audio"));
+    trackTypes.push_back(translation.translateKey("dropdownflags"));
+    trackTypes.push_back(translation.translateKey("fileselectflags"));
+    guiAddTrack = new ofxDatGuiDropdown("Add Track",trackTypes);
+// this is done in setup !!
+//    projectDropDownStrings.push_back("New Project");
+//    projectDropDownStrings.push_back("Open Project");
+//    projectDropDownStrings.push_back("Save Project");
+//    projectDropDownStrings.push_back("");
+    guiProject = new ofxDatGuiDropdown("Project",projectDropDownStrings);
+    
     
     guiDuration->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiBpmNum->onTextInputEvent(this,&DurationController::onTextInputEvent);
-    
     guiBpm->onButtonEvent(this, &DurationController::onButtonEvent);
     
     //    //colors
@@ -2196,17 +2322,19 @@ void DurationController::setupMainGui()
     mainGuiRowB.push_back(guiDuration);
     mainGuiRowB.push_back(guiBpmNum);
     mainGuiRowB.push_back(guiBpm);
+    mainGuiRowB.push_back(guiAddTrack);
+    mainGuiRowB.push_back(guiProject);
     
     lastPosX=0;
     for(int i=0;i<mainGuiRowB.size();i++)
     {
         // colors
         mainGuiRowB[i]->setStripeColor(ofColor(0));
-        mainGuiRowB[i]->setBackgroundColor(ofColor(220));
+        mainGuiRowB[i]->setBackgroundColor(ofColor(230));
         mainGuiRowB[i]->setLabelColor(ofColor(0));
         
         isLong=false;
-        if(mainGuiRowB[i]->getLabel()=="DURATION")
+        if((mainGuiRowB[i]->getLabel()=="DURATION") || (mainGuiRowB[i]->getLabel()=="Project") || (mainGuiRowB[i]->getLabel()=="Add Track") )
         {
             isLong=true;
         }
@@ -2286,6 +2414,7 @@ void DurationController::onButtonEvent(ofxDatGuiButtonEvent e)
     }
     
 }
+
 
 void DurationController::onTextInputEvent(ofxDatGuiTextInputEvent e)
 {

@@ -94,18 +94,18 @@ class DurationController : public ofThread  {
 
 	ofxTimeline& getTimeline();
 
-    ofRectangle canvasRectangle;
-    ofxUICanvas* gui;
-	void guiEvent(ofxUIEventArgs& e);
+//    ofRectangle canvasRectangle;
+//    ofxUICanvas* gui;
+//	void guiEvent(ofxUIEventArgs& e);
     void exit(ofEventArgs& e);
 
 	ofxTLTrack* addTrack(string trackType, string trackName = "", string xmlFileName = "");
 
     //control elements
-    vector<string> trackTypes;
-    ofxUIDropDownList* addTrackDropDown;
-    ofxUIDropDownList* projectDropDown;
-	ofxUIMultiImageButton* saveButton;
+//    vector<string> trackTypes;
+//    ofxUIDropDownList* addTrackDropDown;
+//    ofxUIDropDownList* projectDropDown;
+//	ofxUIMultiImageButton* saveButton;
     
 //    ofxUILabel* timeLabel;
 //    ofxUITextInput* durationLabel;
@@ -151,7 +151,10 @@ class DurationController : public ofThread  {
     virtual void onButtonEvent(ofxDatGuiButtonEvent e);
     virtual void onTextInputEvent(ofxDatGuiTextInputEvent e);
     
+    vector<string> projectDropDownStrings;
+
     // gui A
+    ofxDatGuiLabel* guiProjectName;
     ofxDatGuiToggle* guiPlay;
     ofxDatGuiButton* guiStop;
     ofxDatGuiToggle* guiLoop;
@@ -165,6 +168,8 @@ class DurationController : public ofThread  {
     ofxDatGuiTextInput* guiDuration;
     ofxDatGuiTextInput* guiBpmNum;
     ofxDatGuiToggle* guiBpm;
+    ofxDatGuiDropdown* guiAddTrack;
+    ofxDatGuiDropdown* guiProject;
     
     
     //--
