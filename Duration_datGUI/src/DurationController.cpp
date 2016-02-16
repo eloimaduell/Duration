@@ -1693,7 +1693,9 @@ void DurationController::newProject(string projectPath){
 }
 
 //--------------------------------------------------------------
-void DurationController::newProject(string newProjectPath, string newProjectName){
+void DurationController::newProject(string newProjectPath, string newProjectName)
+{
+    cout << "DurationCtrl::new Project : Path : " << newProjectPath << " ,,, name : " << newProjectName << endl;
     DurationProjectSettings newProjectSettings = defaultProjectSettings();
     newProjectSettings.name = newProjectName;
     newProjectSettings.path = ofToDataPath(newProjectPath);

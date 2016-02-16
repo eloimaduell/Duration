@@ -192,6 +192,7 @@ class DurationController : public ofThread  {
 	string newProjectPath;
     bool shouldLoadProject;
 	string projectToLoad;
+    string pathToProjects;
 
 	ofxOscReceiver receiver;
 	ofxOscSender sender;
