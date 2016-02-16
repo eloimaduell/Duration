@@ -145,6 +145,9 @@ class DurationController : public ofThread  {
     // eloi DAT GUI
     /////////////////
     void setupMainGui();
+    void updateMainGui();
+    void setEnableUIHeaders(bool b);
+    void setEnableMainGui(bool b);
     vector<ofxDatGuiComponent*> mainGuiRowA;
     vector<ofxDatGuiComponent*> mainGuiRowB;
     float mainGuiComponentWidth;

@@ -1225,34 +1225,14 @@ ofxTLTrack* DurationController::addTrack(string trackType, string trackName, str
 	return newTrack;
 }
 
+
 //--------------------------------------------------------------
-void DurationController::update(ofEventArgs& args)
+void DurationController::setEnableUIHeaders(bool b)
 {
-
-//    gui->update();
-
-    //------------------
-    // datGui update
-    //------------------
-
-    for(int i=0;i<mainGuiRowA.size();i++)
-    {
-        mainGuiRowA[i]->update();
-    }
-    for(int i=0;i<mainGuiRowB.size();i++)
-    {
-        mainGuiRowB[i]->update();
-    }
-
-    //------------------
-    // manage dropdowns
-    //------------------
-    
-    // if it's expanded ... disable headers guis !
-    if( (guiAddTrack->getIsExpanded()) || (guiProject->getIsExpanded()) )
+    if(!b)
     {
         // disable events on all ofxTLUIHeaders
-        timeline.disableEvents();
+        //timeline.disableEvents();
         map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
         while(it != headers.end())
         {
@@ -1263,16 +1243,99 @@ void DurationController::update(ofEventArgs& args)
     else
     {
         // enable events on all ofxTLUIHeaders
-        timeline.enableEvents();
+        //timeline.enableEvents();
         map<string,ofPtr<ofxTLUIHeader> >::iterator it = headers.begin();
         while(it != headers.end())
         {
             it->second->setEnabledGui(true);
             it->second->update();
             it++;
-
+            
         }
     }
+    
+    
+}
+//--------------------------------------------------------------
+void DurationController::setEnableMainGui(bool b)
+{
+    if(!b)
+    {
+        for(int i=0;i<mainGuiRowA.size();i++)
+        {
+            mainGuiRowA[i]->setEnabled(false);
+        }
+        for(int i=0;i<mainGuiRowB.size();i++)
+        {
+            mainGuiRowB[i]->setEnabled(false);
+        }
+    }
+    else
+    {
+        for(int i=0;i<mainGuiRowA.size();i++)
+        {
+            mainGuiRowA[i]->setEnabled(true);
+        }
+        for(int i=0;i<mainGuiRowB.size();i++)
+        {
+            mainGuiRowB[i]->setEnabled(true);
+        }
+    }
+
+    
+}
+
+
+//--------------------------------------------------------------
+void DurationController::updateMainGui()
+{
+    //------------------
+    // datGui update
+    //------------------
+    
+    for(int i=0;i<mainGuiRowA.size();i++)
+    {
+        mainGuiRowA[i]->update();
+    }
+    for(int i=0;i<mainGuiRowB.size();i++)
+    {
+        mainGuiRowB[i]->update();
+    }
+}
+
+
+//--------------------------------------------------------------
+void DurationController::update(ofEventArgs& args)
+{
+
+//    gui->update();
+
+    //------------------
+    // main gui update
+    //------------------
+    updateMainGui();
+
+    //------------------
+    // manage dropdowns
+    //------------------
+    // if it's expanded or dragging others ... disable headers guis !
+    
+    //bool inOutDragging = timeline.getInOut()->getIsDragging();
+    //bool zoomerDragging = timeline.getZoomer()->getIsDragging();
+    
+    //cout << "inoutDragg : " << inOutDragging << " // zoomerDragg : " << zoomerDragging << endl;
+    
+    if( (guiAddTrack->getIsExpanded()) || (guiProject->getIsExpanded()) || timeline.isModal()  )
+    {
+        setEnableUIHeaders(false);
+        setEnableMainGui(false);
+    }
+    else
+    {
+        setEnableUIHeaders(true);
+        setEnableMainGui(true);
+    }
+    
     //------------------------------
     // manage dropdown ... addTrack
     //------------------------------
@@ -2227,12 +2290,17 @@ void DurationController::setupMainGui()
     guiOscOutPort = new ofxDatGuiTextInput("PORT","12345");
     guiOscIn = new ofxDatGuiToggle("OSC IN",true);
     guiOscInPort = new ofxDatGuiTextInput("IN PORT","12345");
+    guiBpmNum = new ofxDatGuiTextInput("BPM","12345");
+    guiBpm = new ofxDatGuiToggle("BPM SNAP",false);
+
     
     guiPlay->onButtonEvent(this, &DurationController::onButtonEvent);
     guiStop->onButtonEvent(this, &DurationController::onButtonEvent);
     guiLoop->onButtonEvent(this, &DurationController::onButtonEvent);
     guiOscOut->onButtonEvent(this, &DurationController::onButtonEvent);
     guiOscIn->onButtonEvent(this, &DurationController::onButtonEvent);
+    guiBpmNum->onTextInputEvent(this,&DurationController::onTextInputEvent);
+    guiBpm->onButtonEvent(this, &DurationController::onButtonEvent);
     
     guiOscOutIP->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiOscOutPort->onTextInputEvent(this,&DurationController::onTextInputEvent);
@@ -2248,7 +2316,9 @@ void DurationController::setupMainGui()
     mainGuiRowA.push_back(guiOscOutPort);
     mainGuiRowA.push_back(guiOscIn);
     mainGuiRowA.push_back(guiOscInPort);
-    
+    mainGuiRowA.push_back(guiBpmNum);
+    mainGuiRowA.push_back(guiBpm);
+
     for(int i=0;i<mainGuiRowA.size();i++)
     {
         // colors
@@ -2288,8 +2358,6 @@ void DurationController::setupMainGui()
     
     guiTime = new ofxDatGuiLabel("00:00:00:00");
     guiDuration = new ofxDatGuiTextInput("DURATION","00:00:00:00");
-    guiBpmNum = new ofxDatGuiTextInput("BPM","12345");
-    guiBpm = new ofxDatGuiToggle("BPM SNAP",false);
     vector<string> trackTypes;
     trackTypes.push_back(translation.translateKey("bangs"));
     trackTypes.push_back(translation.translateKey("flags"));
@@ -2308,10 +2376,7 @@ void DurationController::setupMainGui()
 //    projectDropDownStrings.push_back("");
     guiProject = new ofxDatGuiDropdown("Project",projectDropDownStrings);
     
-    
     guiDuration->onTextInputEvent(this,&DurationController::onTextInputEvent);
-    guiBpmNum->onTextInputEvent(this,&DurationController::onTextInputEvent);
-    guiBpm->onButtonEvent(this, &DurationController::onButtonEvent);
     
     //    //colors
     //    guiOscIn->setStripeColor(oscCol);
@@ -2320,8 +2385,6 @@ void DurationController::setupMainGui()
     
     mainGuiRowB.push_back(guiTime);
     mainGuiRowB.push_back(guiDuration);
-    mainGuiRowB.push_back(guiBpmNum);
-    mainGuiRowB.push_back(guiBpm);
     mainGuiRowB.push_back(guiAddTrack);
     mainGuiRowB.push_back(guiProject);
     
