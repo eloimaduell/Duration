@@ -1454,7 +1454,7 @@ void DurationController::update(ofEventArgs& args)
 		else{
 			ofFileDialogResult r = ofSystemSaveDialog("New Project", "NewDuration");
 			if(r.bSuccess){
-				newProject(r.getPath(), r.getName());
+				newProjectFonts(r.getPath(), r.getName());
 			}
 		}
     }
@@ -1692,8 +1692,8 @@ void DurationController::newProject(string projectPath){
 	newProject(projectPath, pathComponents[pathComponents.size()-1]);
 }
 
-//--------------------------------------------------------------
-void DurationController::newProject(string newProjectPath, string newProjectName)
+
+void DurationController::newProjectFonts(string newProjectPath, string newProjectName)
 {
     cout << "DurationCtrl::new Project : Path : " << newProjectPath << " ,,, name : " << newProjectName << endl;
     DurationProjectSettings newProjectSettings = defaultProjectSettings();
@@ -1701,25 +1701,25 @@ void DurationController::newProject(string newProjectPath, string newProjectName
     newProjectSettings.path = ofToDataPath(newProjectPath);
     newProjectSettings.settingsPath = ofToDataPath(newProjectSettings.path + "/.durationproj");
 #ifdef TARGET_WIN32
-	ofStringReplace(newProjectSettings.path,"/", "\\");
+    ofStringReplace(newProjectSettings.path,"/", "\\");
 #endif
     ofDirectory newProjectDirectory(newProjectSettings.path);
     if(newProjectDirectory.exists()){
-    	ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder already exists.")+" " + newProjectSettings.path);
+        ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder already exists.")+" " + newProjectSettings.path);
         return;
     }
     if(!newProjectDirectory.create(true)){
-    	ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder could not be created.")+" " + newProjectSettings.path);
+        ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder could not be created.")+" " + newProjectSettings.path);
         return;
     }
-
+    
     //TODO: prompt to save existing project
     settings = newProjectSettings;
-	lock();
+    lock();
     headers.clear(); //smart pointers will call destructor
     timeline.reset();
-	unlock();
-
+    unlock();
+    
     //saves file with default settings to new directory
     saveProject();
     
@@ -1727,10 +1727,51 @@ void DurationController::newProject(string newProjectPath, string newProjectName
     cout << "DurationCtrlr::new Project : DIR : " << newProjectDirectory.getOriginalDirectory() << endl;
     newProjectDirectory.createDirectory(newProjectDirectory.getOriginalDirectory() + "audio");
     
-
+    
     loadProject(settings.path, settings.name);
+    
+    //    projectDropDown->addToggle(newProjectName);
+}
 
-//    projectDropDown->addToggle(newProjectName);
+//--------------------------------------------------------------
+void DurationController::newProject(string newProjectPath, string newProjectName)
+{
+    cout << "DurationCtrl::new ProjectFONTS : Path : " << newProjectPath << " ,,, name : " << newProjectName << endl;
+    DurationProjectSettings newProjectSettings = defaultProjectSettings();
+    newProjectSettings.name = newProjectName;
+    newProjectSettings.path = ofToDataPath(newProjectPath);
+    newProjectSettings.settingsPath = ofToDataPath(newProjectSettings.path + "/.durationproj");
+#ifdef TARGET_WIN32
+    ofStringReplace(newProjectSettings.path,"/", "\\");
+#endif
+    ofDirectory newProjectDirectory(newProjectSettings.path);
+    if(newProjectDirectory.exists()){
+        ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder already exists.")+" " + newProjectSettings.path);
+        return;
+    }
+    if(!newProjectDirectory.create(true)){
+        ofSystemAlertDialog(translation.translateKey("Error creating new project. The folder could not be created.")+" " + newProjectSettings.path);
+        return;
+    }
+    
+    //TODO: prompt to save existing project
+    settings = newProjectSettings;
+    lock();
+    headers.clear(); //smart pointers will call destructor
+    timeline.reset();
+    unlock();
+    
+    //saves file with default settings to new directory
+    saveProject();
+    
+    //create audio folder
+    cout << "DurationCtrlr::new ProjectFONTS : DIR : " << newProjectDirectory.getOriginalDirectory() << endl;
+    newProjectDirectory.createDirectory(newProjectDirectory.getOriginalDirectory() + "audio");
+    
+    
+    loadProject(settings.path, settings.name);
+    
+    //    projectDropDown->addToggle(newProjectName);
 }
 
 //--------------------------------------------------------------

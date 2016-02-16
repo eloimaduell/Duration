@@ -132,6 +132,7 @@ class DurationController : public ofThread  {
 
 	void newProject(string projectPath);
     void newProject(string newProjectPath, string newProjectName);
+    void newProjectFonts(string newProjectPath, string newProjectName);
     void loadProject(string projectPath, bool forceCreate = false);
     void loadProject(string projectPath, string projectName, bool forceCreate = false);
     void saveProject();
