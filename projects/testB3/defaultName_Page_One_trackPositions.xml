@@ -1,0 +1,32 @@
+<positions>
+    <element name="audio">
+        <x>0.000000000</x>
+        <y>115.000000000</y>
+        <width>1920.000000000</width>
+        <height>61.599998474</height>
+    </element>
+    <element name="curves">
+        <x>0.000000000</x>
+        <y>294.200012207</y>
+        <width>1920.000000000</width>
+        <height>61.599998474</height>
+    </element>
+    <element name="curves_0">
+        <x>0.000000000</x>
+        <y>473.400024414</y>
+        <width>1920.000000000</width>
+        <height>61.599998474</height>
+    </element>
+    <element name="fileselectflags">
+        <x>0.000000000</x>
+        <y>204.600006104</y>
+        <width>1920.000000000</width>
+        <height>61.599998474</height>
+    </element>
+    <element name="fileselectflags_0">
+        <x>0.000000000</x>
+        <y>383.800018311</y>
+        <width>1920.000000000</width>
+        <height>61.599998474</height>
+    </element>
+</positions>
