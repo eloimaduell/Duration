@@ -6,7 +6,7 @@
             <xmlFileName>fileselectflags_.xml</xmlFileName>
             <trackName>fileselectflags</trackName>
             <displayName>PRESET FONT 1</displayName>
-            <OSCaddress>/PRESET FONT 1</OSCaddress>
+            <OSCaddress>/llobregat/preset</OSCaddress>
             <sendOSC>1</sendOSC>
         </track>
         <track>
@@ -14,7 +14,7 @@
             <xmlFileName>curves_.xml</xmlFileName>
             <trackName>curves</trackName>
             <displayName>MASTER 1</displayName>
-            <OSCaddress>/MASTER_1</OSCaddress>
+            <OSCaddress>/llobregat/master</OSCaddress>
             <sendOSC>1</sendOSC>
             <receiveOSC>0</receiveOSC>
             <min>0.000000000</min>
@@ -25,7 +25,7 @@
             <xmlFileName>fileselectflags_0_.xml</xmlFileName>
             <trackName>fileselectflags_0</trackName>
             <displayName>PRESET FONT 2</displayName>
-            <OSCaddress>PRESENT FONT 2</OSCaddress>
+            <OSCaddress>/besos/preset</OSCaddress>
             <sendOSC>1</sendOSC>
         </track>
         <track>
@@ -33,7 +33,7 @@
             <xmlFileName>curves_0_.xml</xmlFileName>
             <trackName>curves_0</trackName>
             <displayName>MASTER 2</displayName>
-            <OSCaddress>/default</OSCaddress>
+            <OSCaddress>/besos/master</OSCaddress>
             <sendOSC>1</sendOSC>
             <receiveOSC>0</receiveOSC>
             <min>0.000000000</min>
@@ -44,25 +44,25 @@
             <xmlFileName>data</xmlFileName>
             <trackName>audio</trackName>
             <displayName>audio</displayName>
-            <OSCaddress>/default</OSCaddress>
+            <OSCaddress>/audio</OSCaddress>
             <sendOSC>1</sendOSC>
-            <clip>JOANDELRIU.wav</clip>
+            <clip>BATALLA.wav</clip>
         </track>
     </page>
 </tracks>
 <timelineSettings>
-    <duration>00:00:40:235</duration>
-    <playhead>00:00:09:708</playhead>
-    <inpoint>00:00:05:013</inpoint>
-    <outpoint>00:00:40:235</outpoint>
+    <duration>00:00:08:000</duration>
+    <playhead>00:00:12:711</playhead>
+    <inpoint>00:00:00:000</inpoint>
+    <outpoint>00:00:08:000</outpoint>
     <loop>1</loop>
 </timelineSettings>
 <projectSettings>
     <name>testA</name>
     <useBPM>0</useBPM>
     <bpm>120.000000000</bpm>
-    <snapToBPM>192</snapToBPM>
-    <snapToKeys>229</snapToKeys>
+    <snapToBPM>1</snapToBPM>
+    <snapToKeys>0</snapToKeys>
     <oscInEnabled>0</oscInEnabled>
     <oscOutEnabled>1</oscOutEnabled>
     <oscInPort>12346</oscInPort>

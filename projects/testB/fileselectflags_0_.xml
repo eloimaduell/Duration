@@ -1,1 +1,32 @@
-<keyframes />
+<keyframes>
+    <key>
+        <filename>testNuevo.json</filename>
+        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
+        <time>00:00:01:996</time>
+        <value>0.149229884</value>
+    </key>
+    <key>
+        <filename>testNuevo.json</filename>
+        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
+        <time>00:00:02:507</time>
+        <value>0.149229884</value>
+    </key>
+    <key>
+        <filename>testNuevo.json</filename>
+        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
+        <time>00:00:03:169</time>
+        <value>0.149229884</value>
+    </key>
+    <key>
+        <filename>testNuevo.json</filename>
+        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
+        <time>00:00:03:792</time>
+        <value>0.149229884</value>
+    </key>
+    <key>
+        <filename>testNuevo.json</filename>
+        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
+        <time>00:00:04:408</time>
+        <value>0.149229884</value>
+    </key>
+</keyframes>

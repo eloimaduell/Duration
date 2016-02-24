@@ -1,14 +1,1 @@
-<keyframes>
-    <key>
-        <filename>testNuevo.json</filename>
-        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank1/testNuevo.json</path>
-        <time>00:00:03:577</time>
-        <value>0.214285731</value>
-    </key>
-    <key>
-        <filename>bank2_1.json</filename>
-        <path>/Volumes/DATA_eLoi/OF_2015/OF_0.9_v1/apps/DurationEloi/Duration_datGUI/projects/testA/presets/bank2/bank2_1.json</path>
-        <time>00:00:14:953</time>
-        <value>0.224489808</value>
-    </key>
-</keyframes>
+<keyframes />

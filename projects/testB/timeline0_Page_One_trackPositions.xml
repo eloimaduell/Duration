@@ -1,5 +1,6 @@
 <positions>
     <element name="audio">
+        <trackType>Audio</trackType>
         <x>0.000000000</x>
         <y>115.000000000</y>
         <width>1300.000000000</width>
@@ -36,12 +37,14 @@
         <height>40.000000000</height>
     </element>
     <element name="curves">
+        <trackType>Curves</trackType>
         <x>0.000000000</x>
         <y>401.000000000</y>
         <width>1300.000000000</width>
         <height>104.000000000</height>
     </element>
     <element name="curves_0">
+        <trackType>Curves</trackType>
         <x>0.000000000</x>
         <y>659.000000000</y>
         <width>1300.000000000</width>
@@ -66,12 +69,14 @@
         <height>100.000000000</height>
     </element>
     <element name="fileselectflags">
+        <trackType>FileSelectFlags</trackType>
         <x>0.000000000</x>
         <y>269.000000000</y>
         <width>1300.000000000</width>
         <height>104.000000000</height>
     </element>
     <element name="fileselectflags_0">
+        <trackType>FileSelectFlags</trackType>
         <x>0.000000000</x>
         <y>533.000000000</y>
         <width>1300.000000000</width>
