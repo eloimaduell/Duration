@@ -37,7 +37,12 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    
+    ofSetWindowPosition(0,0);
+    
+    cout << ofSystem("pwd") << endl;
+    cout << ofSystem("../../../data/openAllBins.sh");
+    
     ofSetVerticalSync(true);
     ofSetFrameRate(30);
     ofBackground(.15*255);

@@ -54,9 +54,9 @@ ofxTLUIHeaderCurves::ofxTLUIHeaderCurves()
     guiMin->setStripeColor(valueCol);
     guiMax->setStripeColor(valueCol);
 
-    headerGuiComponents.push_back(guiOscIn);
-    headerGuiComponents.push_back(guiMin);
-    headerGuiComponents.push_back(guiMax);
+    //headerGuiComponents.push_back(guiOscIn);
+    //headerGuiComponents.push_back(guiMin);
+    //headerGuiComponents.push_back(guiMax);
     
     rearrangeComponents();
     //reorderGuiComponents();

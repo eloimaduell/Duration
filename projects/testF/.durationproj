@@ -1,0 +1,72 @@
+<tracks>
+    <page>
+        <name>Page One</name>
+        <track>
+            <type>FileSelectFlags</type>
+            <xmlFileName>fileselectflags_.xml</xmlFileName>
+            <trackName>fileselectflags</trackName>
+            <displayName>PRESET LLOBREGAT</displayName>
+            <OSCaddress>/default</OSCaddress>
+            <sendOSC>1</sendOSC>
+        </track>
+        <track>
+            <type>Curves</type>
+            <xmlFileName>curves_.xml</xmlFileName>
+            <trackName>curves</trackName>
+            <displayName>MASTER LLOBREGAT</displayName>
+            <OSCaddress>/default</OSCaddress>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+            <min>0.000000000</min>
+            <max>1.000000000</max>
+        </track>
+        <track>
+            <type>FileSelectFlags</type>
+            <xmlFileName>fileselectflags_0_.xml</xmlFileName>
+            <trackName>fileselectflags_0</trackName>
+            <displayName>PRESET BESOS</displayName>
+            <OSCaddress>/default</OSCaddress>
+            <sendOSC>1</sendOSC>
+        </track>
+        <track>
+            <type>Curves</type>
+            <xmlFileName>curves_0_.xml</xmlFileName>
+            <trackName>curves_0</trackName>
+            <displayName>MASTER BESOS</displayName>
+            <OSCaddress>/default</OSCaddress>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+            <min>0.000000000</min>
+            <max>1.000000000</max>
+        </track>
+        <track>
+            <type>Audio</type>
+            <xmlFileName>data</xmlFileName>
+            <trackName>audio</trackName>
+            <displayName>audio</displayName>
+            <OSCaddress>/default</OSCaddress>
+            <sendOSC>1</sendOSC>
+            <clip>JOANDELRIU.wav</clip>
+        </track>
+    </page>
+</tracks>
+<timelineSettings>
+    <duration>00:00:40:235</duration>
+    <playhead>00:00:00:000</playhead>
+    <inpoint>00:00:00:000</inpoint>
+    <outpoint>00:00:40:235</outpoint>
+    <loop>1</loop>
+</timelineSettings>
+<projectSettings>
+    <name>testF</name>
+    <useBPM>0</useBPM>
+    <bpm>120.000000000</bpm>
+    <snapToBPM>100</snapToBPM>
+    <snapToKeys>244</snapToKeys>
+    <oscInEnabled>1</oscInEnabled>
+    <oscOutEnabled>1</oscOutEnabled>
+    <oscInPort>12346</oscInPort>
+    <oscIP>localhost</oscIP>
+    <oscOutPort>12345</oscOutPort>
+    <oscRate>30.000000000</oscRate>
+</projectSettings>

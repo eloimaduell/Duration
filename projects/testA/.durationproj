@@ -5,7 +5,7 @@
             <type>FileSelectFlags</type>
             <xmlFileName>fileselectflags_.xml</xmlFileName>
             <trackName>fileselectflags</trackName>
-            <displayName>PRESET FONT 1</displayName>
+            <displayName>PRESET LLOBREGAT</displayName>
             <OSCaddress>/llobregat/preset</OSCaddress>
             <sendOSC>1</sendOSC>
         </track>
@@ -13,7 +13,7 @@
             <type>Curves</type>
             <xmlFileName>curves_.xml</xmlFileName>
             <trackName>curves</trackName>
-            <displayName>MASTER 1</displayName>
+            <displayName>MASTER LLOBREGAT</displayName>
             <OSCaddress>/llobregat/master</OSCaddress>
             <sendOSC>1</sendOSC>
             <receiveOSC>0</receiveOSC>
@@ -24,17 +24,17 @@
             <type>FileSelectFlags</type>
             <xmlFileName>fileselectflags_0_.xml</xmlFileName>
             <trackName>fileselectflags_0</trackName>
-            <displayName>PRESET FONT 2</displayName>
+            <displayName>PRESET BESOS</displayName>
             <OSCaddress>/besos/preset</OSCaddress>
-            <sendOSC>1</sendOSC>
+            <sendOSC>0</sendOSC>
         </track>
         <track>
             <type>Curves</type>
             <xmlFileName>curves_0_.xml</xmlFileName>
             <trackName>curves_0</trackName>
-            <displayName>MASTER 2</displayName>
+            <displayName>MASTER BESOS</displayName>
             <OSCaddress>/besos/master</OSCaddress>
-            <sendOSC>1</sendOSC>
+            <sendOSC>0</sendOSC>
             <receiveOSC>0</receiveOSC>
             <min>0.000000000</min>
             <max>1.000000000</max>
@@ -52,8 +52,8 @@
 </tracks>
 <timelineSettings>
     <duration>00:00:08:000</duration>
-    <playhead>00:00:12:711</playhead>
-    <inpoint>00:00:00:000</inpoint>
+    <playhead>00:00:00:000</playhead>
+    <inpoint>00:00:00:029</inpoint>
     <outpoint>00:00:08:000</outpoint>
     <loop>1</loop>
 </timelineSettings>
@@ -62,7 +62,7 @@
     <useBPM>0</useBPM>
     <bpm>120.000000000</bpm>
     <snapToBPM>1</snapToBPM>
-    <snapToKeys>0</snapToKeys>
+    <snapToKeys>1</snapToKeys>
     <oscInEnabled>0</oscInEnabled>
     <oscOutEnabled>1</oscOutEnabled>
     <oscInPort>12346</oscInPort>

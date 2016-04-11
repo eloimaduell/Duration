@@ -48,8 +48,14 @@ DurationController::DurationController(){
 	audioTrack = NULL;
 }
 
-DurationController::~DurationController(){
-
+DurationController::~DurationController()
+{
+    sender.setup(guiOscOutIP->getText(), ofToInt(guiOscOutPort->getText()));
+    
+    ofxOscMessage m;
+    m.setAddress("/exit");
+    m.addFloatArg(1.0);
+    sender.sendMessage(m);
 }
 
 void DurationController::enableInterface(){
@@ -903,10 +909,11 @@ void DurationController::handleOscOut(){
 						messageValid = true;
 					}
 				}
-                else if(trackType == "Audio"){
+                else if(trackType == "Audio")
+                {
                     ofxTLAudioTrack* audio = (ofxTLAudioTrack*)tracks[t];
                     
-                    if(audio->getIsPlaying() || timeline.getIsPlaying())
+                    if((audio->getIsPlaying() || timeline.getIsPlaying())&&(audio->getSoundfileName()!=""))
                     {
 //                        vector<float>& bins = audio->getFFT();
 //                        
@@ -1022,14 +1029,15 @@ void DurationController::bangFired(ofxTLBangEventArgs& bang){
         string path = bang.flag;
         vector<string> allStrings = ofSplitString(path,"/");
         int numStrings = allStrings.size();
-        
-        string toSend = getCurrentDurationProjectDirectoryPath() + "presets/" + allStrings[numStrings-2] + "/" + allStrings[numStrings-1];
-        
-        cout << " >> " << toSend << " , " << allStrings[numStrings-2] << " , " << allStrings[numStrings-1] << endl;
-        m.addStringArg(toSend);
-        m.addStringArg(allStrings[numStrings-2]);
-        m.addStringArg(allStrings[numStrings-1]);
 
+        if(allStrings.size()>2)
+        {
+            string toSend = getCurrentDurationProjectDirectoryPath() + "presets/" + allStrings[numStrings-2] + "/" + allStrings[numStrings-1];
+            cout << " >> " << toSend << " , " << allStrings[numStrings-2] << " , " << allStrings[numStrings-1] << endl;
+            m.addStringArg(toSend);
+            m.addStringArg(allStrings[numStrings-2]);
+            m.addStringArg(allStrings[numStrings-1]);
+        }
     }
 
 	bangsReceived.push_back(m);
@@ -1690,24 +1698,41 @@ void DurationController::keyPressed(ofKeyEventArgs& keyArgs){
 		}
     }
 
-    if(key == 'i'){
-		if(ofGetModifierAltPressed()){
-			timeline.setInPointAtMillis(0);
-		}
-		else{
-	        timeline.setInPointAtPlayhead();
-		}
+    // IN OUT
+    if(key == 'i')
+    {
+        timeline.setInPointAtPlayhead();
     }
-
-    if(key == 'o'){
-		if(ofGetModifierAltPressed()){
-			timeline.setOutPointAtPercent(1.0);
-		}
-		else{
-	        timeline.setOutPointAtPlayhead();
-		}
+    else if (key =='I')
+    {
+        timeline.setInPointAtMillis(0);
     }
-
+    else if (key == 'o')
+    {
+        timeline.setOutPointAtPlayhead();
+    }
+    else if (key == 'O')
+    {
+        timeline.setOutPointAtPercent(1.0);
+    }
+    else if (key == 'u')
+    {
+        timeline.setInPointAtMillis(0);
+        timeline.setOutPointAtPercent(1.0);
+    }
+    
+    // ZOOM
+    if(key == 'z')
+    {
+        timeline.getZoomer()->setViewRange(ofRange(0.0,1.0));
+    }
+    else if(key == 'Z')
+    {
+        ofRange io = timeline.getInOutRange(); //timeline.getZoomer()->getSelectedRange();
+        float oldExp = timeline.getZoomer()->getExponent();
+        timeline.getZoomer()->setViewExponent(1.0);
+        timeline.getZoomer()->setViewRange(ofRange(io.min,io.max));
+    }
 
 	if(ofGetModifierShortcutKeyPressed() && (key == 's' || key=='s'-96) ){
 		saveProject();
@@ -2106,7 +2131,7 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     guiOscInPort->setText(ofToString(newSettings.oscInPort = projectSettings.getValue("oscInPort", 12346)) );
     //oscInPortInput->setTextString( ofToString(newSettings.oscInPort = projectSettings.getValue("oscInPort", 12346)) );
     
-    guiOscOutIP->setText( newSettings.oscIP = projectSettings.getValue("oscIP", "1") );
+    guiOscOutIP->setText( newSettings.oscIP = projectSettings.getValue("oscIP", "localhost") );
     //oscOutIPInput->setTextString( newSettings.oscIP = projectSettings.getValue("oscIP", "1") );
     
     guiOscOutPort->setText( ofToString(newSettings.oscOutPort = projectSettings.getValue("oscOutPort", 12345)));
@@ -2125,9 +2150,10 @@ void DurationController::loadProject(string projectPath, string projectName, boo
     settings = newSettings;
 
 //    projectDropDown->setLabelText(projectName);
+    
+    timeline.setBPM(newSettings.bpm);
     timeline.setShowBPMGrid(newSettings.useBPM);
     timeline.enableSnapToBPM(newSettings.useBPM);
-	timeline.setBPM(newSettings.bpm);
 
 	oscLock.lock();
     
@@ -2479,22 +2505,25 @@ void DurationController::setupMainGui()
     guiStop = new ofxDatGuiButton("STOP");
     guiLoop = new ofxDatGuiToggle("LOOP",true);
     guiOscOut = new ofxDatGuiToggle("OSC OUT",true);
-    guiOscOutIP = new ofxDatGuiTextInput("OUT IP","192.168.1.1");
+    guiOscOutIP = new ofxDatGuiTextInput("OUT IP","localhost");
     guiOscOutPort = new ofxDatGuiTextInput("PORT","12345");
     guiOscIn = new ofxDatGuiToggle("OSC IN",true);
     guiOscInPort = new ofxDatGuiTextInput("IN PORT","12345");
     guiBpmNum = new ofxDatGuiTextInput("BPM","12345");
     guiBpm = new ofxDatGuiToggle("BPM SNAP",false);
+    guiMaximizeAll = new ofxDatGuiButton("Max. All");
+    guiMaximizeSelected = new ofxDatGuiButton("Max. Select.");
 
-    
     guiPlay->onButtonEvent(this, &DurationController::onButtonEvent);
     guiStop->onButtonEvent(this, &DurationController::onButtonEvent);
     guiLoop->onButtonEvent(this, &DurationController::onButtonEvent);
     guiOscOut->onButtonEvent(this, &DurationController::onButtonEvent);
     guiOscIn->onButtonEvent(this, &DurationController::onButtonEvent);
-    guiBpmNum->onTextInputEvent(this,&DurationController::onTextInputEvent);
+    guiMaximizeAll->onButtonEvent(this,&DurationController::onButtonEvent);
+    guiMaximizeSelected->onButtonEvent(this,&DurationController::onButtonEvent);
     guiBpm->onButtonEvent(this, &DurationController::onButtonEvent);
-    
+
+    guiBpmNum->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiOscOutIP->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiOscOutPort->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiOscInPort->onTextInputEvent(this,&DurationController::onTextInputEvent);
@@ -2505,12 +2534,15 @@ void DurationController::setupMainGui()
     mainGuiRowA.push_back(guiStop);
     mainGuiRowA.push_back(guiLoop);
     mainGuiRowA.push_back(guiOscOut);
-    mainGuiRowA.push_back(guiOscOutIP);
-    mainGuiRowA.push_back(guiOscOutPort);
-    mainGuiRowA.push_back(guiOscIn);
-    mainGuiRowA.push_back(guiOscInPort);
     mainGuiRowA.push_back(guiBpmNum);
     mainGuiRowA.push_back(guiBpm);
+    mainGuiRowA.push_back(guiMaximizeAll);
+    mainGuiRowA.push_back(guiMaximizeSelected);
+
+    //mainGuiRowA.push_back(guiOscOutIP);
+    //mainGuiRowA.push_back(guiOscOutPort);
+    //mainGuiRowA.push_back(guiOscIn);
+    //mainGuiRowA.push_back(guiOscInPort);
 
     for(int i=0;i<mainGuiRowA.size();i++)
     {
@@ -2567,21 +2599,19 @@ void DurationController::setupMainGui()
 //    projectDropDownStrings.push_back("Open Project");
 //    projectDropDownStrings.push_back("Save Project");
 //    projectDropDownStrings.push_back("");
+    
+    
     guiProject = new ofxDatGuiDropdown("Project",projectDropDownStrings);
     guiZoomToInOut = new ofxDatGuiButton("Zoom I/O");
     guiZoomAll = new ofxDatGuiButton("Zoom All");
 
     guiInOutAll = new ofxDatGuiButton("In/Out All");
-    guiMaximizeAll = new ofxDatGuiButton("Max. All");
-    guiMaximizeSelected = new ofxDatGuiButton("Max. Select.");
 
     guiDuration->onTextInputEvent(this,&DurationController::onTextInputEvent);
     guiZoomToInOut->onButtonEvent(this,&DurationController::onButtonEvent);
     guiZoomAll->onButtonEvent(this,&DurationController::onButtonEvent);
 
     guiInOutAll->onButtonEvent(this,&DurationController::onButtonEvent);
-    guiMaximizeAll->onButtonEvent(this,&DurationController::onButtonEvent);
-    guiMaximizeSelected->onButtonEvent(this,&DurationController::onButtonEvent);
     
     
     //    //colors
@@ -2591,13 +2621,11 @@ void DurationController::setupMainGui()
     
     mainGuiRowB.push_back(guiTime);
     mainGuiRowB.push_back(guiDuration);
-    mainGuiRowB.push_back(guiAddTrack);
+    //mainGuiRowB.push_back(guiAddTrack);
     mainGuiRowB.push_back(guiProject);
     mainGuiRowB.push_back(guiZoomToInOut);
     mainGuiRowB.push_back(guiZoomAll);
     mainGuiRowB.push_back(guiInOutAll);
-    mainGuiRowB.push_back(guiMaximizeAll);
-    mainGuiRowB.push_back(guiMaximizeSelected);
     
     lastPosX=0;
     for(int i=0;i<mainGuiRowB.size();i++)
@@ -2616,9 +2644,17 @@ void DurationController::setupMainGui()
         // position and sizes
         if(isLong)
         {
-            mainGuiRowB[i]->setWidth(mainGuiComponentWidth*2,(mainGuiComponentWidth*2)/2);
             mainGuiRowB[i]->setPosition(lastPosX,22+2);
-            lastPosX = lastPosX + mainGuiComponentWidth*2;
+            if(mainGuiRowB[i]->getLabel()=="Project")
+            {
+                mainGuiRowB[i]->setWidth(mainGuiComponentWidth*3,(mainGuiComponentWidth*2)/2);
+                lastPosX = lastPosX + mainGuiComponentWidth*3;
+            }
+            else
+            {
+                mainGuiRowB[i]->setWidth(mainGuiComponentWidth*2,(mainGuiComponentWidth*2)/2);
+                lastPosX = lastPosX + mainGuiComponentWidth*2;
+            }
         }
         else
         {
@@ -2715,11 +2751,13 @@ void DurationController::onButtonEvent(ofxDatGuiButtonEvent e)
     else if(e.target->getLabel() == "Max. Select.")
     {
         // as clicking outside the timeline resets focus ... we need to gain focus again on the last focused track
-        timeline.setFocusedTrack(timeline.getCurrentPage()->getLastFocusedTrack());
-        
-        timeline.getCurrentPage()->collapseAllTracks(true);
-        ofEventArgs args;
-        ofNotifyEvent(timeline.events().viewWasResized, args);
+        if(timeline.getCurrentPage()->getLastFocusedTrack()!=NULL)
+        {
+            timeline.setFocusedTrack(timeline.getCurrentPage()->getLastFocusedTrack());
+            timeline.getCurrentPage()->collapseAllTracks(true);
+            ofEventArgs args;
+            ofNotifyEvent(timeline.events().viewWasResized, args);
+        }
 
     }
     

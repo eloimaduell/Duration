@@ -102,12 +102,12 @@ ofxTLUIHeader::ofxTLUIHeader()
     
     // array of gui components
     headerGuiComponents.push_back(guiTrackName);
-    headerGuiComponents.push_back(guiPlaySolo);
-    headerGuiComponents.push_back(guiDelay);
+    //headerGuiComponents.push_back(guiPlaySolo);
+    //headerGuiComponents.push_back(guiDelay);
     headerGuiComponents.push_back(guiOscOut);
-    headerGuiComponents.push_back(guiOscAddressButton);
-    headerGuiComponents.push_back(guiOscAddressLabel);
-    headerGuiComponents.push_back(guiDeleteTrack);
+    //headerGuiComponents.push_back(guiOscAddressButton);
+    //headerGuiComponents.push_back(guiOscAddressLabel);
+    //headerGuiComponents.push_back(guiDeleteTrack);
     
     rearrangeComponents();
     

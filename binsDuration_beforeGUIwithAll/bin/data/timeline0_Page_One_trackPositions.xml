@@ -1,0 +1,26 @@
+<positions>
+    <element name="audio">
+        <x>0.000000000</x>
+        <y>113.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="bangs">
+        <x>0.000000000</x>
+        <y>113.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="fileselectflags">
+        <x>0.000000000</x>
+        <y>113.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+    <element name="switches">
+        <x>0.000000000</x>
+        <y>181.000000000</y>
+        <width>1920.000000000</width>
+        <height>40.000000000</height>
+    </element>
+</positions>
